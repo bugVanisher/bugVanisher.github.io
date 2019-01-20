@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  {% include head.html %}
+{% include head.html %}
 
-  <body>
+<body>
 
-    {% include navigation.html %}
+{% include navigation.html %}
 
-    <main>
-      {{ content }}
-    </main>
+<main>
+    {{ content }}
+</main>
 
-    {% include footer.html %}
-  </body>
+{% include footer.html %}
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#toc').toc({ showEffect: 'slideDown',listType: 'ul' });
+    });
+</script>
 </html>
