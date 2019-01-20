@@ -1,15 +1,24 @@
 ---
 layout: post
-title: "About"
-author: "Chester"
+title: "关于"
+author: "见欢"
 permalink: /about/
 ---
 
-A friend of mine writes short stories. One sunny day, I asked if he wanted a website to showcase his works and he agreed. I decided to use GitHub Pages to host his site. That way he wouldn't have to buy a domain and a server.
+### 见欢
+就职公司：阿里巴巴
 
-While doing some research up on GitHub Pages, I accidentally chanced upon this _simple, blog-aware, static site generator_ called [Jekyll](https://jekyllrb.com/) which works really well with GitHub Pages. I figured it would do just fine for my friend and I set about searching for a pretty theme. I wanted a theme with a _book-ish_ vibe. Unfortunately, most of the themes were too modern. Eventually, I caved and begun working on my own theme. With the help of [Poole](https://github.com/poole/poole), the Jekyll Butler, I was able to build **Tale**.
+目前工作：高级测试开发工程师
 
-## Contribute
-Feel free to create an issue or make a pull request on [GitHub](https://github.com/chesterhow/tale).
+擅长业务：第三方虚拟游戏交易,电商
 
-Thanks for reading!
+能力特长：测试效能、质量保障
+
+擅长编程语言：python/java/shell
+
+github地址：[https://github.com/gannicus-yu](https://github.com/gannicus-yu)
+
+邮箱地址：gannicus_yu@163.com
+
+
+谢谢您的阅读！
