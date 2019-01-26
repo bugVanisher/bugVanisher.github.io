@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "常用的shell命令组合"
+title: "常用的shell命令或组合"
 author: "见欢"
 ---
 
