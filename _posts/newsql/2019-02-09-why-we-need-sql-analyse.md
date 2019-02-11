@@ -17,3 +17,25 @@ author: "见欢"
 {% endhighlight %}
 
 ### 需求
+{% highlight markdown %}
+  决定实现慢查询分析系统，接下来就需要梳理整体需求，从以下几个方面考虑。
+{% endhighlight %}
+##### 1、接入成本
+{% highlight markdown %}
+  接入成本是首先要考虑的因素，系统能否推广，很大程度取决于接入成本，因此系统实现必须是方便接入
+的，同时应该尽量减少用户配置。
+{% endhighlight %}
+##### 2、使用成本
+{% highlight markdown %}
+  需要定义系统的使用方式和流程，用户能够快速理解使用方式和流程，配合操作提示或演示。同时配合告
+警，通知功能。
+{% endhighlight %}
+##### 3、系统扩展性
+{% highlight markdown %}
+  系统实现时应该有意识地考虑扩展性，以快速支持新功能开发，扩展性包括但不局限于系统架构、代码组
+织；
+{% endhighlight %}
+##### 3、效果量化
+{% highlight markdown %}
+  实现一套系统，需要量化效果，设计的时候需要包含效果统计，包含使用频率等。
+{% endhighlight %}
