@@ -4,15 +4,19 @@ title: "慢查询告警系统(测试阶段)——系统设计"
 author: "见欢"
 ---
 ### 业务背景和目标
-**业务背景**、**业务目标**请参考 [慢查询告警系统(测试阶段)——需求分析]({% post_url 2019-02-09-why-we-need-sql-analyse %}) 
+**业务背景**、**业务目标**请参考 [慢查询告警系统(测试阶段)——需求分析]({{ site.baseurl }}/2019-02-09/why-we-need-sql-analyse) 
 ### 参考文档
   无
 ### 功能需求用例
 
 | 序号 | 应用 | 需求用例 |
-| 1 | 客户端 | 框架注入 |
+| 1 | 客户端 | 框架注入、异步消息 |
 | 2 | worker | 数据库实例信息获取 |
-| 3 | worker | Sql语句、参数的获取<br>生成时间<br>触发入口 |
+| 3 | worker | 新增Sql语句判断<br>生成时间<br>触发入口 |
+| 4 | worker | 查询计划执行和入库 |
+| 5 | web | 查询、展示 |
+| 6 | web | 订阅管理 |
+| 7 | web | 操作：忽略、处理、误报 |
 
 ### 容量需求
   根据实际情况预估
@@ -71,3 +75,6 @@ select * from shop where shop_name like ? order by ctime desc limit ?,?;
 
 1、新增sql判断
 ![]({{ site.url }}/assets/newsql/新增SQL判断.png) 
+
+2、执行查询计划
+![]({{ site.url }}/assets/newsql/执行查询计划.png) 
