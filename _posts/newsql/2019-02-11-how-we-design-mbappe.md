@@ -21,7 +21,7 @@ author: "见欢"
 ### 容量需求
   根据实际情况预估
 ### 性能需求
-  采用异步消息，消费tps预估不高于2000tps
+  采用异步消息，消费 tps 预估不高于2000 tps
 ### 可用性需求
   99.9%
 ### 扩展性需求
@@ -29,7 +29,7 @@ author: "见欢"
   1、按表订阅告警
   2、
 ### 安全需求
-  不同的业务需要进行数据隔离，即不同的角色不能看到对方的SQL等内容
+  不同的业务需要进行数据隔离，即不同的角色不能看到对方的 SQL 等内容
 ### 系统现状
   无
 ### 系统边界分析设计
@@ -37,14 +37,14 @@ author: "见欢"
 
 系统说明：  
 agent：作为信息拦截，采集然后发送异步消息的客户端  
-worker：消息消费，SQL分析，入库，告警  
-web：订阅管理、SQL处理、查询等
+worker：消息消费，SQL 分析，入库，告警  
+web：订阅管理、SQL 处理、查询等
 
 ### 核心业务流程设计
-sql实体状态图
+sql 实体状态图
 ![]({{ site.url }}/assets/newsql/sql实体状态图.png) 
 ### 数据分析设计
-sql实体相关表设计
+sql 实体相关表设计
 ![]({{ site.url }}/assets/newsql/数据库设计.png) 
 
 通知模块相关设计  
@@ -52,7 +52,7 @@ sql实体相关表设计
 待补充...
 
 ### 关键用例设计
-sql的数量非常多，因此需要对sql进行了参数化(模板化)处理，如下例子：
+sql 的数量非常多，因此需要对 sql 进行了参数化(模板化)处理，如下例子：
 {% highlight sql %}
 #Input
 select * from category where game_id in (2,13,13,13,16,26,28,228,228,759);
@@ -71,7 +71,7 @@ select * from shop where shop_name like ? order by ctime desc limit ?,?;
 
 {% endhighlight %}
 
-同一个app_name下同一个执行数据库只有唯一的一条参数化 sql，保证了数据量可控，人工易于处理；参数化sql关联实际的sql（含多条），前端查询时由参数化sql获取实际的sql。
+同一个 app_name 下同一个执行数据库只有唯一的一条参数化 sql，保证了数据量可控，人工易于处理；参数化 sql 关联实际的 sql（含多条），前端查询时由参数化 sql 获取实际的 sql。
 
 1、新增sql判断
 ![]({{ site.url }}/assets/newsql/新增SQL判断.png) 
