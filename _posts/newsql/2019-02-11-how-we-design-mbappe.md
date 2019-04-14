@@ -2,6 +2,9 @@
 layout: post
 title: "测试阶段慢查询告警系统——系统设计"
 author: "见欢"
+categories: 慢查询告警系统
+description: 测试阶段慢查询告警系统，我们是如何做系统设计的。
+keywords: 慢查询, 设计
 ---
 ### 业务背景和目标
 **业务背景**、**业务目标**请参考 [慢查询告警系统(测试阶段)——需求分析]({{ site.baseurl }}/2019-02-09/why-we-need-sql-analyse) 

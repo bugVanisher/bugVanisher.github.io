@@ -2,6 +2,9 @@
 layout: post
 title: "测试阶段慢查询告警系统——实现"
 author: "见欢"
+categories: 慢查询告警系统
+description: 测试阶段慢查询告警系统，我们是如何实现的。
+keywords: 慢查询, 实现
 ---
 
 ### 一、技术栈

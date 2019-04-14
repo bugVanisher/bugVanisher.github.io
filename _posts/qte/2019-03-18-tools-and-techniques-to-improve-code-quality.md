@@ -2,6 +2,9 @@
 layout: post
 title:  "代码质量保障方案——方法和工具"
 author: "见欢"
+categories: 测试开发
+description: 如何保障系统代码质量，这是一篇比较全面的总结文章。
+keywords: 测试工程师, 代码质量
 ---
 
 <a name="df368884"></a>

@@ -2,6 +2,9 @@
 layout: post
 title: "常用的shell命令或组合"
 author: "见欢"
+categories: shell
+description: 常用的Linux shell命令及组合的整理。
+keywords: shell, linux
 ---
 
 ### 前言

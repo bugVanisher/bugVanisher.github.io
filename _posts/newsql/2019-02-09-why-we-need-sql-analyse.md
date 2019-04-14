@@ -2,6 +2,9 @@
 layout: post
 title: "测试阶段慢查询告警系统——需求分析"
 author: "见欢"
+categories: 慢查询告警系统
+description: 测试阶段慢查询告警系统，我们是如何做需求分析的。
+keywords: 慢查询, 分析
 ---
 ### 现状
 {% highlight markdown %}

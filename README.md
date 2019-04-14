@@ -1,119 +1,82 @@
-# Tale
+# 码志
 
-[![Gem Version](https://badge.fury.io/rb/tale.svg)](https://badge.fury.io/rb/tale)
+我的个人博客：<https://mazhuang.org>，欢迎 Star 和 Fork。
 
-Tale is a minimal Jekyll theme curated for storytellers. Checkout the demo [here](https://chesterhow.github.io/tale/).
+## 概览
 
-![Tale screenshot](http://i.imgur.com/pXZrtmo.png)
+<!-- vim-markdown-toc GFM -->
 
-## Features
-- Easy installation
-- Compatible with GitHub Pages
-- Responsive design (looks just as good on mobile)
-- Syntax highlighting, with the help of Pygments
-- Markdown and HTML text formatting
-- Pagination of posts
+* [效果预览](#效果预览)
+* [Fork 指南](#fork-指南)
+* [贴心提示](#贴心提示)
+* [经验与思考](#经验与思考)
+* [致谢](#致谢)
 
-## Installation
-There are 3 ways to install this theme
+<!-- vim-markdown-toc -->
 
-1. Install it as a Ruby Gem (for self-hosted sites)
-2. Install it with the `jekyll-remote-theme` plugin (for GitHub Pages hosted sites)
-3. Fork the project directly
+## 效果预览
 
-### Ruby Gem method
-1. Add this line to your `Gemfile`:
+**[在线预览 &rarr;](https://mazhuang.org)**
 
-```ruby
-gem "tale"
-```
+![screenshot home](https://mazhuang.org/assets/images/screenshots/home.png)
 
-2. Install the theme's gems and dependencies:
+## Fork 指南
 
-```bash
-$ bundle
-```
+Fork 本项目之后，还需要做一些事情才能让你的页面「正确」跑起来。
 
-3. In `_config.yml` add these lines:
+1. 正确设置项目名称与分支。
 
-```yaml
-theme:      tale
+   按照 GitHub Pages 的规定，名称为 `username.github.io` 的项目的 master 分支，或者其它名称的项目的 gh-pages 分支可以自动生成 GitHub Pages 页面。
 
-permalink:  /:year-:month-:day/:title
-paginate:   5
-```
+2. 修改域名。
 
-Remove any other `theme:` lines.
+   如果你需要绑定自己的域名，那么修改 CNAME 文件的内容；如果不需要绑定自己的域名，那么删掉 CNAME 文件。
 
-4. Rename `index.md` to `index.html`. Without this, the `jekyll-paginate` gem will not work.
+3. 修改配置。
 
-5. In `about.md`, change the `layout:` field to `post`:
+   网站的配置基本都集中在 \_config.yml 文件中，将其中与个人信息相关的部分替换成你自己的，比如网站的 url、title、subtitle 和第三方评论模块的配置等。
 
-```Markdown
-layout: post
-```
+   **评论模块：** 目前支持 disqus、gitment 和 gitalk，选用其中一种就可以了，推荐使用 gitalk。它们各自的配置指南链接在 \_config.yml 文件的 Comments 一节里都贴出来了。
 
-### GitHub Pages method
-1. Add these 2 lines in to your `Gemfile`:
+   **注意：** 如果使用 disqus，因为 disqus 处理用户名与域名白名单的策略存在缺陷，请一定将 disqus.username 修改成你自己的，否则请将该字段留空。我对该缺陷的记录见 [Issues#2][3]。
 
-```ruby
-gem "jekyll-remote-theme"
-gem "jekyll-paginate"
-```
+4. 删除我的文章与图片。
 
-2. Install the newly added gems:
+   如下文件夹中除了 template.md 文件外，都可以全部删除，然后添加你自己的内容。
 
-```bash
-$ bundle
-```
+   * \_posts 文件夹中是我已发布的博客文章。
+   * \_drafts 文件夹中是我尚未发布的博客文章。
+   * \_wiki 文件夹中是我已发布的 wiki 页面。
+   * images 文件夹中是我的文章和页面里使用的图片。
 
-3. In `_config.yml` add these lines:
+5. 修改「关于」页面。
 
-```yaml
-remote_theme: chesterhow/tale
+   pages/about.md 文件内容对应网站的「关于」页面，里面的内容多为个人相关，将它们替换成你自己的信息，包括 \_data 目录下的 skills.yml 和 social.yml 文件里的数据。
 
-permalink:    /:year-:month-:day/:title
-paginate:     5
+## 贴心提示
 
-plugins:
-  - jekyll-paginate
-  - jekyll-remote-theme
-```
+1. 排版建议遵照一定的规范，推荐 [中文文案排版指北（简体中文版）][1]。
 
-Remove any other `theme:` or `remote_theme:` lines.
+2. 在本地预览博客效果可以参考 [Setting up your Pages site locally with Jekyll][2]。
 
-4. Rename `index.md` to `index.html`. Without this, the `jekyll-paginate` gem will not work.
+## 经验与思考
 
-5. In `about.md`, change the `layout:` field to `post`:
+* 简约，尽量每个页面都不展示多余的内容。
 
-```Markdown
-layout: post
-```
+* 有时一图抵千言，有时可能只会拖慢网页加载速度。
 
-### Fork method
-1. Fork this repository
+* 言之有物，不做无痛之呻吟。
 
-2. Delete the unnecessary files/folders: `CODE_OF_CONDUCT.md`, `LICENSE`, `README.md`, `tale.gemspec`
+* 如果写技术文章，那先将技术原理完全理清了再开始写，一边摸索技术一边组织文章效率较低。
 
-3. Delete the `baseurl` line in `_config.yml`:
+* 杜绝难断句、难理解的长句子，如果不能将其拆分成几个简洁的短句，说明脑中的理解并不清晰。
 
-```yaml
-baseurl:  "/tale"   # delete this line
-```
+* 可以学习一下那些高质量的博主，他们的行文，内容组织方式，有什么值得借鉴的地方。
 
-## Usage
-Once you've installed the theme, you're ready to work on your Jekyll site. To start off, I would recommend updating `_config.yml` with your site's details.
+## 致谢
 
-To build and serve your site, run:
+本博客外观基于 [DONGChuan](https://dongchuan.github.io) 修改，感谢！
 
-```bash
-$ bundle exec jekyll serve
-```
-
-And you're all set! Head over to http://127.0.0.1:4000/ to see your site in action.
-
-## Contributing
-Found a bug or have a suggestion? Feel free to create an issue or make a pull request!
-
-## License
-See [LICENSE](https://github.com/chesterhow/tale/blob/master/LICENSE)
+[1]: https://github.com/mzlogin/chinese-copywriting-guidelines
+[2]: https://help.github.com/articles/setting-up-your-pages-site-locally-with-jekyll/
+[3]: https://github.com/mzlogin/mzlogin.github.io/issues/2
