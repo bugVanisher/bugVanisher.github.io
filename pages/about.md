@@ -18,7 +18,7 @@ permalink: /about/
 * {{ website.sitename }}：[@{{ website.name }}]({{ website.url }})
 {% endfor %}
 
-## Skill Keywords
+## 技能关键字
 
 {% for category in site.data.skills %}
 ### {{ category.name }}
