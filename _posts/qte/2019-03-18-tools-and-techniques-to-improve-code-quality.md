@@ -53,7 +53,7 @@ keywords: 测试工程师, 代码质量
 在当前业务变更范围内通常不会导致BUG、故障，却会在日后埋下地雷，引发BUG、故障、维护成本大幅增加
 1. 更难发现的错误
 
-复杂并发场景下的有一定技术难度的、需要丰富开发与设计经验才能看出来的错误<br />  以上三个方面的具体内容，请看下方的脑图，这里不展开描述，可以看到的是代码规约可以帮助我们规避1、2中的大部分问题。<br />![codereview.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/36681/1552060744574-197b7375-e090-4650-95fe-06ae2c4b5133.png#align=left&display=inline&height=319&name=codereview.png&originHeight=1260&originWidth=2942&size=407516&status=done&width=746)
+复杂并发场景下的有一定技术难度的、需要丰富开发与设计经验才能看出来的错误<br />  以上三个方面的具体内容，请看下方的脑图，这里不展开描述，可以看到的是代码规约可以帮助我们规避1、2中的大部分问题。<br />![codereview.png](http://assets.processon.com/chart_image/5c828382e4b0c996d35c2505.png)
 
 <a name="8e491e81"></a>
 ## 三、白盒测试
@@ -61,10 +61,10 @@ keywords: 测试工程师, 代码质量
 <a name="4fabce43"></a>
 ### 测试分层
 
-![测试金字塔.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/36681/1552353932870-1118e15f-9ae8-4743-9054-16e88d3ab99d.png#align=left&display=inline&height=407&name=%E6%B5%8B%E8%AF%95%E9%87%91%E5%AD%97%E5%A1%94.png&originHeight=496&originWidth=909&size=32404&status=done&width=746)<br />  按照以上的测试分层，白盒测试基本上属于下方的单元测试和集成测试范畴。
+![测试金字塔.png](http://assets.processon.com/chart_image/5c86698de4b09a16b99e07e5.png)<br />  按照以上的测试分层，白盒测试基本上属于下方的单元测试和集成测试范畴。
 <a name="634efc00"></a>
 ### 单元测试框架及差异
-  junit是JAVA的官方单元测试框架，目前稳定且广泛使用的是4.12版本，这两年推出了下一代独立版本junit5。而testng，被人们誉为下一代单元测试框架，下面主要看testng包含哪些junit（这里主要指junit4）没有的功能。<br />![单元测试框架及差异.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/36681/1552355703685-676f393b-50d0-4ac0-8edd-2cb6abb3038f.png#align=left&display=inline&height=535&name=%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%B7%AE%E5%BC%82.png&originHeight=650&originWidth=906&size=59398&status=done&width=746)<br />
+  junit是JAVA的官方单元测试框架，目前稳定且广泛使用的是4.12版本，这两年推出了下一代独立版本junit5。而testng，被人们誉为下一代单元测试框架，下面主要看testng包含哪些junit（这里主要指junit4）没有的功能。<br />![单元测试框架及差异.png](http://assets.processon.com/chart_image/5c870b00e4b01e76977a9cfa.png)<br />
 <a name="9b942096"></a>
 #### 注解支持
 Junit4和TestNG的注解对比：
@@ -156,14 +156,14 @@ public class ConcurrencyTest {
 1. 一些应用里面自己的Class(abstract，final，static）、Interface、Annotation、Enum和Native等。
 <a name="45f4270c"></a>
 #### Mock工具的原理
-![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/36681/1552227397957-518c524f-d7cd-47ef-a1a7-658f74ea8a37.png#align=left&display=inline&height=91&name=image.png&originHeight=107&originWidth=480&size=47776&status=done&width=406)  
+![image.png]({{ site.url }}/assets/qte/mock原理.png)
 1. Record阶段：录制期望。也可以理解为数据准备阶段。创建依赖的Class或Interface或Method，模拟返回的数据、耗时及调用的次数等。
 1. Replay阶段：通过调用被测代码，执行测试。期间会Invoke到第一阶段Record的Mock对象或方法。
 1. Verify阶段：验证。可以验证调用返回是否正确，及Mock的方法调用次数，顺序等。
 
 <a name="b13e835f"></a>
 #### 主流框架对比
-  我们常用的mock测试框架主要有mockito、jmockit、powermock、easymock、jmock，其中主要功能对比下：<br />![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/36681/1552483796062-b1052847-a3d6-417e-bafd-06faa710f500.png#align=left&display=inline&height=698&name=image.png&originHeight=1010&originWidth=885&size=648602&status=done&width=612)<br />
+  我们常用的mock测试框架主要有mockito、jmockit、powermock、easymock、jmock，其中主要功能对比下：<br />![image.png]({{ site.url }}/assets/qte/主流mock框架对比.png)<br />
 
 从上面可以看到，JMockit的的功能最全面、强大！它基于java.lang.instrument包开发，并使用ASM库来修改Java的Bytecode，因此基本能实现无所不能的mock。然而由于它的学习成本相对较高，因此目前主流的mock测试框架为jmockit和mockito，下面来具体看看他们的优劣点：
 
@@ -210,7 +210,7 @@ _目前Java常用覆盖率工具Jacoco、Emma和Cobertura_
 <a name="79a10235"></a>
 #### 覆盖率工具工作流程
 
-![代码覆盖率工具工作流程.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/36681/1552487976977-78f3aad5-be16-4eb3-8f27-a065971b85db.png#align=left&display=inline&height=478&name=%E4%BB%A3%E7%A0%81%E8%A6%86%E7%9B%96%E7%8E%87%E5%B7%A5%E5%85%B7%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.png&originHeight=635&originWidth=990&size=99172&status=done&width=746)
+![代码覆盖率工具工作流程.png](http://assets.processon.com/chart_image/5c8912b7e4b0afc744109c36.png)
 
 1. 对Java字节码进行插桩，On-The-Fly和Offine两种方式。
 1. 执行测试用例，收集程序执行轨迹信息，将其dump到内存。
@@ -218,7 +218,7 @@ _目前Java常用覆盖率工具Jacoco、Emma和Cobertura_
 1. 将代码覆盖率报告图形化展示出来，如html、xml等文件格式。
 <a name="4dd57411"></a>
 #### 插桩原理
-![](https://intranetproxy.alipay.com/skylark/lark/0/2019/jpeg/36681/1552488059892-ffe4afc0-1596-40f3-a51a-736354968977.jpeg#align=left&display=inline&height=348&originHeight=1068&originWidth=2292&size=0&status=done&width=746)
+![]({{ site.url }}/assets/qte/插桩原理.jpeg)
 
   主流代码覆盖率工具都采用字节码插桩模式，通过钩子的方式来记录代码执行轨迹信息。其中字节码插桩又分为两种模式On-The-Fly和Offine。On-The-Fly模式优点在于无需修改源代码，可以在系统不停机的情况下，实时收集代码覆盖率信息。Offine模式优点在于系统启动不需要额外开启代理，但是只能在系统停机的情况下才能获取代码覆盖率。 基于以上特性，同时由于使用JDK8，我们采用Jacoco来获取集成测试代码覆盖率，单元测试使Cobertura。
 
@@ -251,7 +251,7 @@ _目前Java常用覆盖率工具Jacoco、Emma和Cobertura_
 <a name="e6bec5dc"></a>
 ## 五、持续集成
   说到持续集成，相信大家脑海里就会想起Jenkins，典型的持续集成流程如下：<br />
-![持续集成流程.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/36681/1552567118021-0e2685c4-c474-429f-9637-7e0fde616166.png#align=left&display=inline&height=536&name=%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%B5%81%E7%A8%8B.png&originHeight=595&originWidth=676&size=43080&status=done&width=609)
+![持续集成流程.png](http://assets.processon.com/chart_image/5c8a4387e4b09a16b9a2bae2.png)
 
 互联网软件的开发和发布，已经形成了一套标准流程，最重要的组成部分就是持续集成（Continuous integration，简称CI）。
 
@@ -264,7 +264,7 @@ _目前Java常用覆盖率工具Jacoco、Emma和Cobertura_
 #### 持续部署
   持续部署（continuous deployment）是持续交付的下一步，指的是代码通过评审以后，自动部署到生产环境。<br />  持续部署的目标是，代码在任何时刻都是可部署的，可以进入生产阶段。<br />  持续部署的前提是能自动化完成测试、构建、部署等步骤。它与持续交付的区别，可以参考下图。
 
-![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/36681/1552567590855-4622fa1d-8d80-4bea-9418-4dd35e4d4465.png#align=left&display=inline&height=364&name=image.png&originHeight=360&originWidth=600&size=251336&status=done&width=606)
+![image.png]({{ site.url }}/assets/qte/持续交付.png)
 
 常用的构建工具如下。
 > * [Jenkins](http://jenkins-ci.org/)
