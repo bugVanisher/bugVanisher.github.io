@@ -123,3 +123,6 @@
     background-color: #777;
     border-radius: 10px;
 }
+p{
+    text-indent: 1em; /*首行缩进*/
+}
