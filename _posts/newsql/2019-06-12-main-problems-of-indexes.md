@@ -2,7 +2,7 @@
 layout: post
 title: "数据库索引常见问题"
 author: "见欢"
-categories: 慢查询告警系统
+categories: 慢查询分析系统
 description: 数据库索引的常见问题
 keywords: 慢查询, 索引, 问题
 ---

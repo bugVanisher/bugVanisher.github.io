@@ -1,14 +1,14 @@
 ---
 layout: post
-title: "测试阶段慢查询告警系统——实现"
+title: "测试阶段慢查询分析系统——实现"
 author: "见欢"
-categories: 慢查询告警系统
-description: 测试阶段慢查询告警系统，我们是如何实现的。
+categories: 慢查询分析系统
+description: 测试阶段慢查询分析系统，我们是如何实现的。
 keywords: 慢查询, 实现
 ---
 
 ### 一、技术栈
-拥抱开源技术， mbappe 慢查询告警系统使用开源软件实现，以下是各个应用使用的技术栈：
+拥抱开源技术， mbappe 慢查询分析系统使用开源软件实现，以下是各个应用使用的技术栈：
 ##### agent
 * jvm-sanbox
 * rocketmq
