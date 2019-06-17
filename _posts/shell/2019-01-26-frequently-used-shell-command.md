@@ -62,6 +62,11 @@ sed -i '/^a.*/d' tmp.txt
 awk -F' ' '{print $1}' sourcefile.log | uniq -c | sort -k 1 -r;
 {% endhighlight %}
 
+##### 4、查找文本文件内容
+{% highlight sh %}
+find ./ -type f -name "*.log" | xargs grep "ERROR"
+{% endhighlight %}
+
 ### 三、网络相关
 ##### 1、查看占用指定端口的程序
 {% highlight sh %}
