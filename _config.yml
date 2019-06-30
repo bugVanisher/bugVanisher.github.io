@@ -2,7 +2,7 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-url: "https://gannicus-yu.github.io"
+url: "https://bugVanisher.github.io"
 date_format: "ordinal"
 title: 见欢的博客
 subtitle: "欢迎光临"
@@ -81,7 +81,7 @@ collections:
         output: true
         permalink: /wiki/:path/
 
-repository: gannicus-yu/gannicus-yu.github.io
+repository: gannicus-yu/bugVanisher.github.io
 
 # ---------------- #
 #      Comments    #
@@ -103,7 +103,7 @@ gitment:
 # https://github.com/gitalk/gitalk#install
 gitalk:
     owner: gannicus-yu
-    repo: gannicus-yu.github.io
+    repo: bugVanisher.github.io
     clientID: 9e1f09bdf9e2538d34e5
     clientSecret: 0c8dce35ce1f5fc461abcfd45ffd84eb4995688d
 # 在使用其它评论组件时可点击显示 Disqus
