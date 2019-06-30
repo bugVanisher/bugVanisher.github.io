@@ -2,7 +2,7 @@
 layout: page
 title: About
 description: 快乐工作，认真生活！
-keywords: Gannicus-yu, 见欢
+keywords: bugVanisher, 见欢
 comments: true
 menu: 关于
 permalink: /about/
