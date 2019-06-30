@@ -4,7 +4,7 @@ title: "如何编写测试用例"
 author: "见欢"
 categories: 测试开发
 description: 如何编写测试用例，这是一个系统性的思考。
-keywords: 测试工程师, 用例编写
+keywords: 测试工程师,用例编写
 ---
 
 ## 一、用例标准

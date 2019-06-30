@@ -4,7 +4,7 @@ title: "关于测试工程师技能的思考"
 author: "见欢"
 categories: 能力模型
 description: 有关测试工程是技能的一些思考。
-keywords: 测试工程师, 测试开发, 技能
+keywords: 测试工程师,测试开发,技能
 ---
 
 ### 职位的类型

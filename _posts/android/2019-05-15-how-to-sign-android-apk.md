@@ -3,7 +3,7 @@ layout: post
 title: 如何给安卓apk包签名
 categories: [Android]
 description: 安卓apk的签名方式和过程
-keywords: 安卓, 数字证书, 签名, 打包
+keywords: 数字证书,签名,打包
 ---
 <a name="wyt9qi"></a>
 ## [](#wyt9qi)一、非混淆打包流程
