@@ -18,7 +18,8 @@ side_bar_repo_limit: 5
 author: 见欢
 organization: 
 organization_url: 
-github_username: gannicus-yu
+github_username: bugVanisher
+github: [metadata]
 location: GuangZhou, China
 email: gannicus_yu@163.com
 
@@ -81,7 +82,7 @@ collections:
         output: true
         permalink: /wiki/:path/
 
-repository: gannicus-yu/bugVanisher.github.io
+repository: bugVanisher/bugVanisher.github.io
 
 # ---------------- #
 #      Comments    #
@@ -94,15 +95,15 @@ comments_provider: gitalk
 disqus:
     username: 
 # https://imsun.net/posts/gitment-introduction/
-gitment:
-    owner: gannicus-yu
-    repo: blog-comments
-    oauth:
-        client_id: d2e1cbbd298958076462
-        client_secret: b42a4178e5fd4a7cf63189ef4b1453b05c375709
+#gitment:
+#    owner: bugVanisher
+#    repo: blog-comments
+#    oauth:
+#        client_id: d2e1cbbd298958076462
+#        client_secret: b42a4178e5fd4a7cf63189ef4b1453b05c375709
 # https://github.com/gitalk/gitalk#install
 gitalk:
-    owner: gannicus-yu
+    owner: bugVanisher
     repo: bugVanisher.github.io
     clientID: 9e1f09bdf9e2538d34e5
     clientSecret: 0c8dce35ce1f5fc461abcfd45ffd84eb4995688d
