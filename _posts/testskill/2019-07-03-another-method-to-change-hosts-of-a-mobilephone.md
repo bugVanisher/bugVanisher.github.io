@@ -38,6 +38,9 @@ keywords: hosts,代理,抓包
 ## 设置Burpsuite
 1）Proxy-Option-SSL Pass Through勾选“**automatically add entries on client SSL negotiation failure**”<br />![image.png]({{ site.url }}/assets/testskill/burp-ssl-pass.png)<br />  当然如果可以在手机安装代理服务器的证书，直接抓取https的包是最好的（网上已有很多教程，这里也不赘述了）。实际情况是，proxy并不能对所有的https域名完成安全连接的建立，从而顺利抓到包的，所以抓不到的就用http-tunnel吧。
 
+最后整理下已知的方案：
+![](http://assets.processon.com/chart_image/5d1d9105e4b04889887e7e89.png)
+
 <a name="vgWgc"></a>
 ## 参考链接
 [https://www.joji.me/en-us/blog/the-http-connect-tunnel/](https://www.joji.me/en-us/blog/the-http-connect-tunnel/)
