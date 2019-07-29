@@ -179,8 +179,8 @@ public class ConcurrencyTest {
 | 序号 | mockito | jmockit |
 | --- | --- | --- |
 | 1 | 本身不支持静态方法或构造函数的mock，但结合powermock可以实现 | 能直接mock静态方法或构造函数 |
-| 2 | mock API使用前后不太一直，具体表现为：在record阶段，我们调用类似这样调用when(mock.mockedMethod(args))；然而在verify阶段，我们却这样调用verify(mock).mockedMethod(args)<br />前者我们调用被mock方法是直接调用mock对象，而后者是调用verify返回的对象 | 没有这种不一致，调用被mock方法永远是调用mock对象本身 |
-| 3 | 没有内建的代码覆盖率工具，使用结合jacoco和mockito+powermock做代码覆盖率报告是冲突和问题较多。而Cobertura的支持更好 | 包含内建的代码覆盖率工具，并且完美支持jacoco |
+| 2 | mock API使用前后不太一致，具体表现为：在record阶段，我们调用类似这样调用when(mock.mockedMethod(args))；然而在verify阶段，我们却这样调用verify(mock).mockedMethod(args)<br />前者我们调用被mock方法是直接调用mock对象，而后者是调用verify返回的对象 | 没有这种不一致，调用被mock方法永远是调用mock对象本身 |
+| 3 | 没有内建的代码覆盖率工具，使用结合jacoco和mockito+powermock做代码覆盖率报告时冲突和问题较多。而Cobertura的支持更好 | 包含内建的代码覆盖率工具，并且完美支持jacoco |
 | 4 | 相对jmockit更容易学习和使用 | 学习曲线比较陡 |
 | 5 | 自定义参数匹配相比jmockit更加复杂 | 相对简单 |
 | 6 | 名气更大，更受欢迎，社区更大，作为spring的官方mock框架 | 知名度和社区相对小一些 |
