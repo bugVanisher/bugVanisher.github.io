@@ -24,9 +24,7 @@ Locust使用了以下几个核心库：
 	Python Http库
 4) msgpack-python
 	MessagePack是一种快速、紧凑的二进制序列化格式，适用于类似JSON的数据格式。msgpack-python主要提供MessagePack数据序列化及反序列化的方法。
-5) six
-	Python2和3兼容库，用来封装Python2和Python3之间的差异性
-6) pyzmq
+5) pyzmq
 	pyzmq是zeromq(一种通信队列)的Python实现,主要用来实现Locust的分布式模式运行
 ```
 
@@ -46,12 +44,12 @@ Locust使用了以下几个核心库：
 | 结果采集器 | √ | √ | √ |
 | 结果分析器 | √ | √ | √ |
 
-上表简单展示了几个工具包含的压测组件，可见Locust的架构非常简单，部分组件的实现甚至都非常简单，比如结果分析器，Locust本身并没有很详细的测试报告。但这并不妨碍它称为优秀的开源框架。
+上表简单展示了几个工具包含的压测组件，Locust的架构非常简单，部分组件的实现甚至都不完善，比如结果分析器，Locust本身并没有很详细的测试报告。但这并不妨碍它成为优秀的开源框架。
 
 ### Locust的架构
 
 * locust架构上使用master-slave模型，支持单机和分布式
-* master和slave使用ZeroMQ 协议通讯
+* master和slave使用 ZeroMQ 协议通讯
 * 提供web页面管理master，从而控制slave，同时展示压测过程和汇总结果
 * 可选no-web模式（一般用于调试）
 * 基于Python本身已经支持跨平台
@@ -83,7 +81,7 @@ Locust使用了以下几个核心库：
 * slave的start_hatching启动协程，使用分配的并发数开始压测
 * TaskSet和Locust持有client，可以直接发起客户端请求，client可以自己实现，Locust只实现了HttpLocust
 
-看完上面的类图，是不是觉得Locust非常的简单呢？实际上，如果不是对Locust做二次开发，只是使用，那么基本上只会使用到Locust-压测用例相关的类，还有就是EventHook-事件钩子。当然，如果掌握了整个Locust的架构和核心类，那么对它进行二次开发会变得更简单，同时，平时的使用也会更加得心应手，Have fun！
+看完上面的类图，是不是觉得Locust非常的简单呢？实际上，如果不是对Locust做二次开发，只是使用，那么基本上只会使用到Locust-压测用例相关的类，还有就是EventHook-事件钩子。当然，如果掌握了整个Locust的架构和核心类，那么对它进行二次开发会变得更简单，同时，日常的使用也会更加得心应手，Have fun！
 
 
 
