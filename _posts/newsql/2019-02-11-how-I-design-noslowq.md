@@ -48,7 +48,7 @@ sql 实体状态图
 ![]({{ site.url }}/assets/newsql/sql实体状态图.png) 
 ### 数据分析设计
 sql 实体相关表设计
-![]({{ site.url }}/assets/newsql/数据库设计.png) 
+![](http://processon.com/chart_image/5b4ab0c2e4b00c2f18cddbfe.png) 
 
 通知模块相关设计  
 
