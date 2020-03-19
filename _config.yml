@@ -82,7 +82,7 @@ collections:
         output: true
         permalink: /wiki/:path/
 
-repository: bugVanisher/bugVanisher.github.io
+repository: bugVanisher/bugvanisher.github.io
 
 # ---------------- #
 #      Comments    #
