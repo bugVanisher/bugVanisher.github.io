@@ -13,7 +13,7 @@ published: true
 直播SDK包含推流和拉流，这两块测试内容我将会分两篇文章讲述，这一篇讲的是——推流SDK。
 
 在讲直播SDK测试之前，我们先来了解一下整个的直播业务架构从而更好地理解我们究竟要测试什么内容。
-![](https://user-gold-cdn.xitu.io/2018/3/26/162601f0836f2cb7?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![]({{ site.url }}/assets/live-streaming/直播架构.png)
 
 ## 测试内容
 要实现一个直播推流端，需要实现采集-预处理-编码-传输，四个主要功能，所以测试也主要围绕这几个方面，所有的测试内容见如下图：
