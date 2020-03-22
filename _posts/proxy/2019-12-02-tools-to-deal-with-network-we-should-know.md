@@ -7,14 +7,14 @@ keywords: 抓包, 代理
 published: true
 ---
 
-这篇文章介绍一些我认为比较好用，常用到的抓包工具，具体用法网上很多了我就不赘述了，这里主要讨论它们的区别与使用场景。我的观点是，没有最好的工具，只有最合适的工具。
+这篇文章介绍一些我认为比较好用，常用到的抓包工具，具体用法网上有很多，了我就不赘述了，这里主要讨论它们的区别与使用场景。我的观点是，没有最好的工具，只有最合适的工具。
 
 ## Http代理抓包
 
 以下是http代理抓包工具：
 
-* Fiddler 是 freeware， 它的 macOS 版本已经在进行 beta 测试了。
-* Charles 是商业软件，它也有 Windows 版本，由于使用 JAVA 编写，它的 Windows 版很容易实现。
+* Fiddler 是 freeware， 以前只有Windows版，最近它也出了 macOS 版本。
+* Charles 是商业软件，之前只有macOS版本，现在它也有 Windows 版本了，由于使用 JAVA 编写，它的 Windows 版很容易实现。
 * Burp Suite 基于Java编写，是用于攻击web 应用程序的集成平台。它包含了许多工具，并为这些工具设计了许多接口，以促进加快攻击应用程序的过程。
 * Whistle 是基于 Node 实现的跨平台抓包调试代理工具。
 * Mitmproxy 免费的、开源的交互式的http代理工具，提供UI和命令行模式。
@@ -24,7 +24,7 @@ Fiddler | .NET Framework |  原生Windows，已支持MacOS | 支持 | 支持查�
 Charles | Java |  原生MacOS，有Windows版 | 不支持 | 不支持 | 商业软件
 Burp Suite | Java |  完全跨平台 | 支持 | 支持查看 | 分专业版、免费版
 Whistle | Node |  完全跨平台 | 支持 | 支持且较全面 | 是
-Mitmproxy | Python、c |  完全跨平台 | 支持 | 不支持 | 是
+Mitmproxy | Python、C |  完全跨平台 | 支持 | 不支持 | 是
 
 ## TCP层抓包
 
@@ -34,14 +34,14 @@ Mitmproxy | Python、c |  完全跨平台 | 支持 | 不支持 | 是
 
 * wireshark 最重要的且被广泛使用的网络协议分析工具。主要功能是撷取网络封包，并尽可能显示出最为详细的网络封包资料。
 
-tcpdump是一个命令行工具，很多时候是结合wireshark（可视化工具）一起使用，即使用tcpdump将网络数据包抓去并导出为.pcap文件，然后使用wireshark进行分析。
+tcpdump是一个命令行工具，很多时候结合wireshark（可视化工具）一起使用，先用tcpdump将网络数据包抓取并导出为.pcap文件，然后使用wireshark进行分析。
 
 ## 真机抓包
 有些应用比较皮，不走操作系统的 HTTP 代理。还有些应用直接走 TCP 协议，无法使用 HTTP 代理抓包。
 
 iOS 5后，Apple引入了RVI remote virtual interface的特性，它只需要将iOS设备使用USB数据线连接到mac上，然后使用rvictl工具，以iOS设备的UDID为参数（可用iTunes查看）在Mac中建立一个虚拟网络接口rvi，就可以在mac设备上使用tcpdump，wireshark等工具对创建的接口进行抓包分析。
 
-Android实际上是linux系统，和后台一样可以使用tcpdump命令来抓包，但是需要root权限。
+Android实际上是linux系统，和PC操作系统一样可以使用tcpdump来抓包，但是需要root权限。
 
 PacketCapture 和 tPacketCapture 可以直接安装在 Android 设备上，他们会在设备上启动一个 VPN，让所有的网络流量都从 VPN 经过，从而实现抓包。这两个 App 在安装的时候都不需要 Root 权限。
 

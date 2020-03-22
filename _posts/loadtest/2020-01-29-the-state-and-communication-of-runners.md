@@ -6,8 +6,8 @@ description: 介绍了locust的runner的状态与通信机制
 keywords: locust, runner
 ---
 
-上一篇文章讲了[Locust的架构和核心类]({{ site.baseurl }}/2019/03/22/the-structure-of-locust/)，那么接下来应该学习什么呢？我认为应该是：Runner的状态和通信机制。
-为什么呢？我们知道Locust等压测工具支持分布式压测，就是说理论上可以通过不断添加压力机(slave)提高并发数量，这个机制让使用者可以自由地增减机器资源。
+上一篇文章介绍了[Locust的架构和核心类]({{ site.baseurl }}/2019/03/22/the-structure-of-locust/)，那么接下来我们继续了解Locust分布式压测的核心：Runner的状态和通信机制。
+我们知道Locust等压测工具支持分布式压测，就是说理论上可以通过不断添加压力机(slave)提高并发数量，这个机制让使用者可以自由地增减机器资源，从而达到期望的施压能力。
 
 ### Runner状态机
 
