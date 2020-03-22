@@ -7,6 +7,8 @@ description: 测试阶段慢查询分析系统，我们是如何实现的。
 keywords: 慢查询,实现
 ---
 
+经过一段时间的开发，测试阶段慢查询分析系统终于完成了基本的功能，我正式把它取名为 [no-slow-query](https://github.com/bugVanisher/no-slow-query)(简称noslowq)，还有它的其中一个Java客户端实现[noslowq-java-agent](https://github.com/bugVanisher/noslowq-java-agent)
+
 ### 一、技术栈
 拥抱开源技术， noslowq 慢查询分析系统使用开源软件实现，以下是各个应用使用的技术栈：
 ##### agent
