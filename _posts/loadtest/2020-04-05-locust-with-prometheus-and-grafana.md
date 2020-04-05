@@ -32,7 +32,7 @@ published: true
 实现一个Locust的prometheus的exporter，将数据导入prometheus，然后使用grafana进行数据展示。
 ```
 
-*不难发现Jmeter在网上有许多类似方案的介绍，但很遗憾的是我没有找到很好实现Locust监控平台的实现，所以只能自己实现了。*
+*不难发现Jmeter在网上有许多类似方案的介绍，但很遗憾的是我没有找到很好实现Locust监控平台的方案，所以只能自己实现了。*
 
 
 ## Docker环境
@@ -42,104 +42,8 @@ Docker环境不是必须的，但是用过都说好。我们这次实战是在do
 ## 编写locsut prometheus exporter
 如Locust的官方文档所介绍的 [Extending Locust](https://docs.locust.io/en/stable/extending-locust.html) 我们可以扩展web端的接口，比如添加一个/export/prometheus 接口，这样Prometheus根据配置定时来拉取Metric信息就可以为Grafana所用了。这里需要使用Prometheus官方提供的client库，[prometheus_client](https://github.com/prometheus/client_python)，来生成符合Prometheus规范的metrics信息，具体的实现代码如下：
 
-```python
-#!/usr/bin/env python
-# coding: utf-8
+{% gist bd432509d76417c5242cff301dc09dbd %}
 
-"""
-    Created by bugVanisher on 2020-03-21
-"""
-
-from itertools import chain
-
-import six
-from flask import request, Response
-from prometheus_client import Metric, REGISTRY, exposition
-
-from locust import web, runners, stats as locust_stats
-
-class LocustCollector(object):
-    registry = REGISTRY
-
-    def collect(self):
-        # 只有在运行的时候才产生metric，这样在停止压测的时候prometheus就不会收集多余的数据.
-        if runners.locust_runner and runners.locust_runner.state in ([runners.STATE_HATCHING, runners.STATE_RUNNING]):
-
-            stats = []
-
-            for s in chain(locust_stats.sort_stats(runners.locust_runner.request_stats),
-                           [runners.locust_runner.stats.total]):
-                stats.append({
-                    "method": s.method,
-                    "name": s.name,
-                    "num_requests": s.num_requests,
-                    "num_failures": s.num_failures,
-                    "avg_response_time": s.avg_response_time,
-                    "min_response_time": s.min_response_time or 0,
-                    "max_response_time": s.max_response_time,
-                    "current_rps": s.current_rps,
-                    "median_response_time": s.median_response_time,
-                    "avg_content_length": s.avg_content_length,
-                    "current_fail_per_sec": s.current_fail_per_sec
-                })
-
-            # 这里的errors key是method+Name+Type哈希过的，相同method+Name的接口如果Type不一样会导致丢失部分数据（add_sample是被覆盖）
-            errors = [e.to_dict() for e in six.itervalues(runners.locust_runner.errors)]
-
-            metric = Metric('locust_user_count', 'Swarmed users', 'gauge')
-            metric.add_sample('locust_user_count', value=runners.locust_runner.user_count, labels={})
-            yield metric
-
-            metric = Metric('locust_errors', 'Locust requests errors', 'gauge')
-            for err in errors:
-                metric.add_sample('locust_errors', value=err['occurrences'],
-                                  labels={'path': err['name'], 'method': err['method']})
-            yield metric
-
-            is_distributed = isinstance(runners.locust_runner, runners.MasterLocustRunner)
-            if is_distributed:
-                metric = Metric('locust_slave_count', 'Locust number of slaves', 'gauge')
-                metric.add_sample('locust_slave_count', value=len(runners.locust_runner.clients.values()), labels={})
-                yield metric
-
-            metric = Metric('locust_fail_ratio', 'Locust failure ratio', 'gauge')
-            metric.add_sample('locust_fail_ratio', value=runners.locust_runner.stats.total.fail_ratio, labels={})
-            yield metric
-
-            metric = Metric('locust_state', 'State of the locust swarm', 'gauge')
-            metric.add_sample('locust_state', value=1, labels={'state': runners.locust_runner.state})
-            yield metric
-
-            stats_metrics = ['avg_content_length', 'avg_response_time', 'current_rps', 'current_fail_per_sec', 'max_response_time',
-                             'median_response_time', 'min_response_time', 'num_failures', 'num_requests']
-
-            for mtr in stats_metrics:
-                mtype = 'gauge'
-                if mtr in ['num_requests', 'num_failures']:
-                    mtype = 'counter'
-                metric = Metric('locust_requests_' + mtr, 'Locust requests ' + mtr, mtype)
-                for stat in stats:
-                    # Aggregated stats method label is None, so name it as total
-                    # locust change name Total to Aggregated since 0.12.1
-                    if 'Aggregated' != stat['name']:
-                        metric.add_sample('locust_stats_' + mtr, value=stat[mtr],
-                                          labels={'path': stat['name'], 'method': stat['method']})
-                    else:
-                        metric.add_sample('locust_stats_' + mtr, value=stat[mtr],
-                                          labels={'path': stat['name'], 'method': 'Aggregated'})
-                yield metric
-
-
-@web.app.route("/export/prometheus")
-def prometheus_exporter():
-    registry = REGISTRY
-    encoder, content_type = exposition.choose_encoder(request.headers.get('Accept'))
-    if 'name[]' in request.args:
-        registry = REGISTRY.restricted_registry(request.args.get('name[]'))
-    body = encoder(registry)
-    return Response(body, content_type=content_type)
-
-```
 以上文件命名为exporter.py,下面编写一个Demo.py：
 
 ```python
@@ -263,7 +167,7 @@ docker run -d -p 3000:3000 grafana/grafana
 ![]({{ site.url }}/assets/locust/db_list.jpg)
 
 5) 导入模板
-导入模板有几种方式，这里我们使用导入[json](https://gist.github.com/bugVanisher/042759e1d6971e14bc21f1d0510688f2)
+导入模板有几种方式，这里我们使用导入[json](https://gist.github.com/bugVanisher/5ddd563a6caf03329d51cd9b5d5fd629)
 ![]({{ site.url }}/assets/locust/import.jpg)
 ![]({{ site.url }}/assets/locust/import_json.jpg)
 
@@ -272,6 +176,8 @@ docker run -d -p 3000:3000 grafana/grafana
 经过一系列『折腾』之后，是时候看看效果了。使用 Docker + Locust + Prometheus + Grafana 到底可以搭建怎样的性能监控平台呢？相比较 Locust 自带的监控平台，我们搭建的性能监控平台究竟有什么优势呢？接下来就是展示成果的时候啦！
 
 ![]({{ site.url }}/assets/locust/dashboard.jpg)
+
+![]({{ site.url }}/assets/locust/dashboard2.jpg)
 
 这个监控方案不仅提供了炫酷好看的图表，，还能持久化存储所有压测数据，可以使用Share Dashboard功能保存测试报告并分享，简直太方便！
 
