@@ -275,7 +275,7 @@ docker run -d -p 3000:3000 grafana/grafana
 
 这个监控方案不仅提供了炫酷好看的图表，，还能持久化存储所有压测数据，可以使用Share Dashboard功能保存测试报告并分享，简直太方便！
 
-![]({{ site.url }}/assets/locust/report.jpg)
+![]({{ site.url }}/assets/locust/share.jpg)
 
 
 之前Locust一直被人诟病，主要有两方面，一是监控平台做得太过于简陋，二是CPython的GIL导致需要起更多的slave来充分利用多核CPU且并发大之后response time不稳定。对于第一个问题，相信读到篇文章的你应该认为这不是什么问题了，而第二点，如果我们无法摆脱GIL，那自己实现一个slave端呢？后面我们一起来学习下，如何实现一个Locust的slave端，敬请期待~
