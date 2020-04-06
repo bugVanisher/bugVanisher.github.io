@@ -18,12 +18,15 @@ keywords: 慢查询,实现
 ##### worker
 * rocketmq
 * spring-boot
+* fastsql
 
 ##### web
 * spring-boot
 * vue2.x
 * webpack
 * element-UI
+* vue-admin-template
+
 
 ### 二、效果展示
 下面将会展示 noslowq 系统的基本功能。

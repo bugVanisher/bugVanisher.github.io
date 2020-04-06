@@ -40,7 +40,7 @@ Docker环境不是必须的，但是用过都说好。我们这次实战是在do
 
 
 ## 编写locsut prometheus exporter
-如Locust的官方文档所介绍的 [Extending Locust](https://docs.locust.io/en/stable/extending-locust.html) 我们可以扩展web端的接口，比如添加一个/export/prometheus 接口，这样Prometheus根据配置定时来拉取Metric信息就可以为Grafana所用了。这里需要使用Prometheus官方提供的client库，[prometheus_client](https://github.com/prometheus/client_python)，来生成符合Prometheus规范的metrics信息，具体的实现代码如下：
+如Locust的官方文档所介绍的 [Extending Locust](https://docs.locust.io/en/stable/extending-locust.html) 我们可以扩展web端的接口，比如添加一个/export/prometheus 接口，这样Prometheus根据配置定时来拉取Metric信息就可以为Grafana所用了。这里需要使用Prometheus官方提供的client库，[prometheus_client](https://github.com/prometheus/client_python)，来生成符合Prometheus规范的metrics信息，具体的实现[代码](https://gist.github.com/bugVanisher/bd432509d76417c5242cff301dc09dbd)如下：
 
 {% gist bd432509d76417c5242cff301dc09dbd %}
 
@@ -179,7 +179,7 @@ docker run -d -p 3000:3000 grafana/grafana
 
 ![]({{ site.url }}/assets/locust/dashboard2.jpg)
 
-这个监控方案不仅提供了炫酷好看的图表，，还能持久化存储所有压测数据，可以使用Share Dashboard功能保存测试报告并分享，简直太方便！
+这个监控方案不仅提供了炫酷好看的图表，还能持久化存储所有压测数据，可以使用Share Dashboard功能保存测试报告并分享，简直太方便！
 
 ![]({{ site.url }}/assets/locust/share.jpg)
 
