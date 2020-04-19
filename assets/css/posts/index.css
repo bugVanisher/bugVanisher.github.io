@@ -126,3 +126,34 @@
 p{
     text-indent: 1em; /*首行缩进*/
 }
+
+span.article-type {
+    display: inline-block;
+    margin-top: 4px;
+    width: 38px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 2px;
+    vertical-align: 1px
+}
+
+span.article-type.type-1 {
+    color: #ca0c16;
+    background: #f9ecec
+}
+
+span.article-type.type-2 {
+    color: #74cf59;
+    background: #eaf9e3
+}
+
+span.article-type.type-3 {
+    color: #7db2ed;
+    background: #e8f2fc
+}
+
+.float-none {
+    float: none !important
+}

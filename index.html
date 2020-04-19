@@ -9,7 +9,7 @@ comments: false
     <div class="collection-head">
         <div class="container">
             <div class="collection-title">
-              <h1 class="collection-header" id="sub-title"><span>{{ site.subtitle }}</span></h1>
+                <h1 class="collection-header" id="sub-title"><span>{{ site.subtitle }}</span></h1>
                 <div class="collection-info">
                     <span class="meta-info mobile-hidden">
                         <span class="octicon octicon-location"></span>
@@ -21,7 +21,7 @@ comments: false
                         <a href="{{ site.organization_url }}" target="_blank">{{ site.organization }}</a>
                     </span>
                     {% endif %}
-                     <span class="meta-info">
+                    <span class="meta-info">
                         <span class="octicon octicon-mark-github"></span>
                         <a href="https://github.com/{{ site.github_username }}" target="_blank">{{ site.github_username }}</a>
                     </span>
@@ -33,12 +33,19 @@ comments: false
 <!-- /.banner -->
 <section class="container content">
     <div class="columns">
-        <div class="column two-thirds" >
+        <div class="column two-thirds">
             <ol class="repo-list">
                 {% for post in paginator.posts %}
                 <li class="repo-list-item">
                     <h3 class="repo-list-name">
-                      <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
+                        {% if post.type == "reproduce" %}
+                        <span class="article-type type-2 float-none">转载</span>
+                        {% elsif post.type == "translate" %}
+                        <span class="article-type type-3 float-none">翻译</span>
+                        {% else %}
+                        <span class="article-type type-1 float-none">原创</span>
+                        {% endif %}
+                        <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
                     </h3>
                     <p class="repo-list-description">
                         {{ post.excerpt | strip_html | strip }}
@@ -65,33 +72,33 @@ comments: false
         </div>
     </div>
     <div class="pagination text-align">
-      <div class="btn-group">
-        {% if paginator.previous_page %}
-          {% if paginator.previous_page == 1 %}
-              <a href="{{ site.url }}/" class="btn btn-outline">&laquo;</a>
-          {% else %}
-              <a href="{{ site.url }}/page{{paginator.previous_page}}"  class="btn btn-outline">&laquo;</a>
-          {% endif %}
-        {% else %}
+        <div class="btn-group">
+            {% if paginator.previous_page %}
+            {% if paginator.previous_page == 1 %}
+            <a href="{{ site.url }}/" class="btn btn-outline">&laquo;</a>
+            {% else %}
+            <a href="{{ site.url }}/page{{paginator.previous_page}}" class="btn btn-outline">&laquo;</a>
+            {% endif %}
+            {% else %}
             <button disabled="disabled" href="javascript:;" class="btn btn-outline">&laquo;</button>
-        {% endif %}
-        {% if paginator.page == 1 %}
+            {% endif %}
+            {% if paginator.page == 1 %}
             <a href="javascript:;" class="active btn btn-outline">1</a>
-        {% else %}
-            <a href="{{ site.url }}/"  class="btn btn-outline">1</a>
-        {% endif %}
-        {% for count in (2..paginator.total_pages) %}
-          {% if count == paginator.page %}
-              <a href="javascript:;"  class="active btn btn-outline">{{count}}</a>
-          {% else %}
-              <a href="{{ site.url }}/page{{count}}"  class="btn btn-outline">{{count}}</a>
-          {% endif %}
-        {% endfor %}
-        {% if paginator.next_page %}
-            <a href="{{ site.url }}/page{{paginator.next_page}}"  class="btn btn-outline">&raquo;</a>
-        {% else %}
+            {% else %}
+            <a href="{{ site.url }}/" class="btn btn-outline">1</a>
+            {% endif %}
+            {% for count in (2..paginator.total_pages) %}
+            {% if count == paginator.page %}
+            <a href="javascript:;" class="active btn btn-outline">{{count}}</a>
+            {% else %}
+            <a href="{{ site.url }}/page{{count}}" class="btn btn-outline">{{count}}</a>
+            {% endif %}
+            {% endfor %}
+            {% if paginator.next_page %}
+            <a href="{{ site.url }}/page{{paginator.next_page}}" class="btn btn-outline">&raquo;</a>
+            {% else %}
             <button disabled="disabled" href="javascript:;" class="btn btn-outline">&raquo;</button>
-        {% endif %}
+            {% endif %}
         </div>
     </div>
     <!-- /pagination -->
