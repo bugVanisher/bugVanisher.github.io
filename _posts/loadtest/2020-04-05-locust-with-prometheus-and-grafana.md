@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 实战|Locust+Prometheus+Grafana 搭建性能监控平台
-categories: [测试开发]
+categories: [性能测试]
 description: Locust性能监控平台
 keywords: Locust, 监控平台, Prometheus, Grafana
 published: true

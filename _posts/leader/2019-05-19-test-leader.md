@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 如何做好一名测试leader或测试负责人
-categories: 测试leader
+categories: 能力模型
 description: 分享个人对测试负责人或测试leader的看法
 keywords: 测试leader,测试管理
 ---
