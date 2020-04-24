@@ -4,10 +4,10 @@ title: 使用boomer压测grpc协议
 categories: [性能测试]
 description: grpc的压测实践以及boomer的压测应用实例
 keywords: grpc, boomer, 性能测试
-published: false
+published: true
 ---
 
-	由于工作原因，需要对grpc协议进行压测，在网上找了一圈，并没有找到相关的资料，为了得到较好的并发能力，我结合Locust+boomer实现了grpc协议的压测脚本。
+>由于工作原因，需要对grpc协议进行压测，在网上找了一圈，并没有找到可以直接引用的资料，为了得到较好的并发能力，我结合Locust+boomer实现了grpc协议的压测。
 
 ## grpc服务
 
@@ -128,8 +128,47 @@ func NewRequester(addr string, service string, method string, timeoutMs uint, po
 ## 脚本编写
 接下来就是编写boomer脚本了，我们需要两个文件，一个是pb结构的请求和响应，一个是main.go
 
-#### 基于PB文件.proto生成供go使用的.go文件
+### a、基于.proto生成供go使用的.go文件
+grpc使用PB结构传输消息，.proto文件定义了PB数据，使用protoc工具可以生成直接给不同语言使用的数据结构和接口定义文件，如下
+
 ```sh
-protoc helloworld.proto --go_out=./
+-> % protoc helloworld.proto --go_out=./
 ```
+
+### b、编写压测脚本并引入.go文件对象
+在helloworld例子中存在两个PB对象，分别是HelloRequest、HelloReply，python暴露的rpc服务和接口分别为helloworld.Greeter和SayHello，所以调用方式如下：
+
+```go
+startTime := time.Now()
+
+// 构建请求对象
+request := &HelloRequest{}
+request.Name = req.Name
+
+// 初始化响应对象
+resp := new(HelloReply)
+err := client.Call(request, resp)
+
+elapsed := time.Since(startTime)
+```
+完整的文件地址请看 [main.go](https://github.com/bugVanisher/boomer/blob/master/examples/rpc/main.go)
+
+### c、调试脚本
+使用boomer的 --run-tasks 调试脚本
+
+```sh
+-> % cd examples/rpc
+-> % go run *.go -a localhost:50051 -r '{"name":"bugVanisher"}' --run-tasks rpcReq
+2020/04/24 21:31:11 {"name":"bugVanisher"}
+2020/04/24 21:31:11 Running rpcReq
+2020/04/24 21:31:11 Resp Length: 29
+2020/04/24 21:31:11 message:"Hello, bugVanisher!"
+```
+
+至此，基于boomer的grpc压测脚本已经完成了，剩下的就是结合Locust对被测系统进行压测了，我这里就不赘述了。
+
+## 总结
+本文展示了如何压测一个官方Demo的grpc服务接口，这仅是一个演示，真实的业务一般会针对grpc框架做封装，也许不同的语言有各自完整的一套开源框架了。需要注意的地方是，不同的框架下，我们Invoke时真实的method可能有所不同，要根据实际情况做修改。
+
+结合连接池和boomer，压测脚本能产生非常好的施压能力，这也体现了go语言的强大。如果想实现非http协议的压测同时又想拥有不错的并发施压能力，boomer是一个不错的选择。
 
