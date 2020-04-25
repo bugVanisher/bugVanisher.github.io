@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 如何提高Locust的压测性能——实现一个第三方库
+title: 如何提高Locust的压测性能
 categories: [性能测试]
-description: 介绍了实现一个locust的第三方库来提高Locust的压测性能
-keywords: locust, 第三方库, third-party
+description: 介绍了Locust的性能缺陷以及如何提高它的压测性能
+keywords: locust, performance
 published: true
 ---
 
@@ -12,8 +12,8 @@ published: true
 #### 一、GIL
 熟悉Python的人应该都知道，基于cpython编译器的python天生就受限于它的全局解释锁GIL(global interpreter lock)，尽管可以使用jython、pypy摆脱GIL但是很多经典的库在它们上面还没有经过严格的测试。好在Locust使用基于gevent的协程来实现并发，实际上，使用了 **libev** 或者 **libuv** 作为eventloop的gevent可以极大地提高Python的并发能力，拥有不比JAVA多线程并发模型差的能力。然而，还是由于GIL，gevent也只是释放了单核CPU的能力，导致Locust的并发能力必须通过起与CPU核数相同的slave才能发挥出来。
 
-#### 二、非常慢的requests库
-了解requests库的人，无不惊讶于它设计得如此精妙好用的API。然而，在性能上却与它的易用性相差甚远，而Locust默认使用requests作为http请求库，如果需要提高施压能力，可以使用[fasthttp](https://github.com/locustio/locust/blob/master/examples/fast_http_locust.py),可以提高5倍左右的性能，但是正如Locust作者所说的，fasthttp目前并不能完全替代requests。
+#### 二、性能不佳的requests库
+Locust默认使用requests作为http请求库，了解requests库的人，无不惊讶于它设计得如此精妙好用的API。然而，在性能上却与它的易用性相差甚远，如果需要提高施压能力，可以使用[fasthttp](https://github.com/locustio/locust/blob/master/examples/fast_http_locust.py),预估能提高5倍左右的性能，但是正如Locust作者所说的，fasthttp目前并不能完全替代requests。
 
 #### 三、rt评估不准
 相信有些人吐槽过，在并发比较大的情况下，Locust的响应时间rt波动比较大，甚至变得不可信。rt是通过slave去统计的，因此并发大导致slave不稳定也是Locust被人诟病的问题之一，下面我们看一张压测对比图：
@@ -54,4 +54,4 @@ Golang下的goroutine
 
 目前boomer除了比较完整实现了Locust的slave端逻辑，还额外支持指定TPS，理论上支持任意协议的压测。
 
-然而，boomer还没有支持Locust那套Event机制，也无法把自定义数据上报给master。
+然而，boomer对Locust那套Event机制支持的还不够好，也无法把自定义数据上报给master，但不妨碍它成为一个优秀的压力生成器。

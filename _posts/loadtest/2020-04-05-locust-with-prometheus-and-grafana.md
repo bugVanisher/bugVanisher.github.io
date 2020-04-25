@@ -6,7 +6,6 @@ description: Locust性能监控平台
 keywords: Locust, 监控平台, Prometheus, Grafana
 published: true
 ---
-
 ## 需求背景
 当我们使用Locust做性能压测的时候，压测的过程和展示如下：
 ![]({{ site.url }}/assets/locust/statistics.jpg) 
@@ -39,12 +38,12 @@ published: true
 Docker环境不是必须的，但是用过都说好。我们这次实战是在docker中完成的，因为它实在是太方便了，如果你也想快速尝试一下本文的监控平台方案，建议先准备好docker环境。
 
 
-## 编写locsut prometheus exporter
-如Locust的官方文档所介绍的 [Extending Locust](https://docs.locust.io/en/stable/extending-locust.html) 我们可以扩展web端的接口，比如添加一个/export/prometheus 接口，这样Prometheus根据配置定时来拉取Metric信息就可以为Grafana所用了。这里需要使用Prometheus官方提供的client库，[prometheus_client](https://github.com/prometheus/client_python)，来生成符合Prometheus规范的metrics信息，具体的实现[代码](https://gist.github.com/bugVanisher/bd432509d76417c5242cff301dc09dbd)如下：
+## 编写exporter
+如Locust的官方文档所介绍的 [Extending Locust](https://docs.locust.io/en/stable/extending-locust.html) 我们可以扩展web端的接口，比如添加一个 /export/prometheus 接口，这样Prometheus根据配置定时来拉取Metric信息就可以为Grafana所用了。这里需要使用Prometheus官方提供的client库，[prometheus_client](https://github.com/prometheus/client_python)，来生成符合Prometheus规范的metrics信息。
 
-{% gist bd432509d76417c5242cff301dc09dbd %}
+由于篇幅原因这里不展示代码了，完整代码可以查看这里[prometheus_exporter](https://github.com/bugVanisher/boomer/blob/master/prometheus_exporter.py)
 
-以上文件命名为exporter.py,下面编写一个Demo.py：
+下面编写一个locustfile命名为Demo.py：
 
 ```python
 #!/usr/bin/env python
@@ -101,6 +100,7 @@ http://127.0.0.1:8089/export/prometheus
 
 ## Prometheus部署
 exporter已经ready了，接下来就是把prometheus部署起来，拉取metric数据了。
+
 1) 准备好了docker环境，我们直接把prometheus镜像拉下来：
 
 ```shell
@@ -125,7 +125,7 @@ scrape_configs:
     
     metrics_path: '/export/prometheus'
     static_configs:
-      - targets: ['192.168.31.112:8089']
+      - targets: ['192.168.1.2:8089']  # 地址修改为实际地址
         labels:
           instance: locust
 ```
@@ -136,14 +136,13 @@ scrape_configs:
 docker run -itd -p 9090:9090 -v ~/opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 ```
 
-接下来我们访问Prometheus的graph页面，查询下是否有数据了
+接下来我们访问Prometheus的graph页面，查询下是否有数据了。
 
 ```
 http://127.0.0.1:9090/graph
 ```
 ![]({{ site.url }}/assets/locust/prom_graph.jpg)
 
-OK，有数据，太棒了！
 
 ## Grafana部署和配置
 1）首先我们需要下载grafana的镜像：
@@ -167,7 +166,8 @@ docker run -d -p 3000:3000 grafana/grafana
 ![]({{ site.url }}/assets/locust/db_list.jpg)
 
 5) 导入模板
-导入模板有几种方式，这里我们使用导入[json](https://gist.github.com/bugVanisher/5ddd563a6caf03329d51cd9b5d5fd629)
+
+导入模板有几种方式，选择一种方式将[dashboard](https://grafana.com/grafana/dashboards/12081)模板导入。
 ![]({{ site.url }}/assets/locust/import.jpg)
 ![]({{ site.url }}/assets/locust/import_json.jpg)
 
@@ -184,4 +184,4 @@ docker run -d -p 3000:3000 grafana/grafana
 ![]({{ site.url }}/assets/locust/share.jpg)
 
 
-之前Locust一直被人诟病，主要有两方面，一是监控平台做得太过于简陋，二是CPython的GIL导致需要起更多的slave来充分利用多核CPU且并发大之后response time不稳定。对于第一个问题，相信读到篇文章的你应该认为这不是什么问题了，而第二点，如果我们无法摆脱GIL，那自己实现一个slave端呢？后面我们一起来学习下，如何实现一个Locust的slave端，敬请期待~
+>Locust一直被人诟病，主要有两方面，一是监控平台做得太过于简陋，二是CPython的GIL导致需要起更多的slave来充分利用多核CPU且并发大之后response time不稳定。对于第一个问题，相信读到篇文章的你应该认为这不是什么问题了，而第二点，如果我们无法摆脱GIL，那自己用另一种语言实现一个slave端呢？实际上，有人做出来了，它就是boomer和locust4j。

@@ -7,7 +7,7 @@ keywords: grpc, boomer, 性能测试
 published: true
 ---
 
->由于工作原因，需要对grpc协议进行压测，在网上找了一圈，并没有找到可以直接引用的资料，为了得到较好的并发能力，我结合Locust+boomer实现了grpc协议的压测。
+>由于工作原因，需要对grpc协议进行压测，在网上找了一圈，并没有找到可以直接使用的工具，于是结合Locust+boomer实现了grpc协议的压测。
 
 ## grpc服务
 
@@ -19,16 +19,16 @@ gRPC具有以下重要特征：
 * 支持多种语言 支持C++、Java、Go、Python、Ruby、C#、Node.js、Android Java、Objective-C、PHP等编程语言。 
 * 基于HTTP/2标准设计
 
-官网上有非常多语言的快速入门，为了演示跨语言调用，且boomer是基于go语言的，所以我演示的案例是go->python。首先根据官方的指引，起一个helloworld的grpc服务。
+官网上有非常多语言的快速入门，为了演示跨语言调用，且boomer是基于go语言的，所以我演示的案例是go->python。首先根据官方文档的指引，起一个helloworld的grpc服务。
 
-[https://grpc.io/docs/quickstart/python/](https://grpc.io/docs/quickstart/python/) 根据快速入门，起一个Python的grpc服务。
+根据[python](https://grpc.io/docs/quickstart/python/) 的快速入门，起一个基于Python的grpc服务。
 
 ```sh
 -> % python greeter_server.py                                                                                                                                          
 
 ```
 
-为了验证服务是否正常启动了，我们直接使用greeter_client.py验证一下：
+为了验证服务是否正常启动了，先直接使用greeter_client.py验证一下：
 
 ```sh
 -> % python greeter_client.py
@@ -36,7 +36,7 @@ Greeter client received: Hello, you!
 ```
 
 ## 序列化和反序列化
-为了从boomer侧发起请求，首先需要对请求和响应做序列化与反序列化，在阅读grpc的源码后，整理如下：
+为了从boomer侧发起请求，首先需要对请求和响应做序列化与反序列化，在阅读grpc的源码后，定义一个结构体ProtoCodec：
 
 ```go
 // ProtoCodec ...
@@ -72,7 +72,7 @@ type Requester struct {
 }
 ```
 
-Requester中定义两个方法，一个是获取真实的调用方法getRealMethodName，一个是具体的调用Call，其中Call是暴露给外层调用的。
+Requester中定义两个方法，一个是获取真实的调用方法getRealMethodName，一个是发起请求的方法Call，其中Call是暴露给外层调用的。
 
 ![]({{ site.url }}/assets/grpc/grequester.jpg)
 
@@ -95,7 +95,7 @@ if err = cc.(*grpc.ClientConn).Invoke(ctx, r.getRealMethodName(), req, resp, grp
 ```
 
 ## 连接池
-如http1.1的Keep-Alive，在高并发下需要保持grpc连接以提高性能，所以需要实现一个grpc的连接池管理，这也是Requester结构体中pool职责。
+如http1.1的Keep-Alive，在高并发下需要保持grpc连接以提高性能，所以需要实现一个grpc的连接池管理，这也是Requester结构体中pool的职责。
 
 Requester实例化时初始化连接池：
 
@@ -123,22 +123,32 @@ func NewRequester(addr string, service string, method string, timeoutMs uint, po
 }
 ```
 
-这里使用了开源库 [pool](https://github.com/silenceper/pool) 来做grpc的连接管理。在Call方法中每次发起请求前在连接池中获取一个连接，调用完成后释放回连接池中。
+这里使用了开源库 [pool](https://github.com/silenceper/pool) 来做grpc的连接管理。在Call方法中每次发起请求前在连接池中获取一个连接，调用完成后放回连接池中。
 
 ## 脚本编写
-接下来就是编写boomer脚本了，我们需要两个文件，一个是pb结构的请求和响应，一个是main.go
+接下来就是编写boomer脚本了，我们需要两个文件，一个定义pb结构的请求和响应，一个是执行逻辑main.go
 
-### a、基于.proto生成供go使用的.go文件
+### a、基于.proto生成供go使用的pb.go文件
 grpc使用PB结构传输消息，.proto文件定义了PB数据，使用protoc工具可以生成直接给不同语言使用的数据结构和接口定义文件，如下
 
 ```sh
 -> % protoc helloworld.proto --go_out=./
 ```
+执行成功后生成helloworld.pb.go文件，供main.go引用。
 
-### b、编写压测脚本并引入.go文件对象
+### b、编写压测脚本main.go
 在helloworld例子中存在两个PB对象，分别是HelloRequest、HelloReply，python暴露的rpc服务和接口分别为helloworld.Greeter和SayHello，所以调用方式如下：
 
 ```go
+
+// 修改为要压测的服务接口
+var service = "helloworld.Greeter"
+var method = "SayHello"
+...
+
+client = grequester.NewRequester(addr, service, method, timeout, poolsize)
+...
+
 startTime := time.Now()
 
 // 构建请求对象
@@ -159,16 +169,16 @@ elapsed := time.Since(startTime)
 ```sh
 -> % cd examples/rpc
 -> % go run *.go -a localhost:50051 -r '{"name":"bugVanisher"}' --run-tasks rpcReq
-2020/04/24 21:31:11 {"name":"bugVanisher"}
-2020/04/24 21:31:11 Running rpcReq
-2020/04/24 21:31:11 Resp Length: 29
-2020/04/24 21:31:11 message:"Hello, bugVanisher!"
+2020/04/21 21:31:11 {"name":"bugVanisher"}
+2020/04/21 21:31:11 Running rpcReq
+2020/04/21 21:31:11 Resp Length: 29
+2020/04/21 21:31:11 message:"Hello, bugVanisher!"
 ```
 
 至此，基于boomer的grpc压测脚本已经完成了，剩下的就是结合Locust对被测系统进行压测了，我这里就不赘述了。
 
 ## 总结
-本文展示了如何压测一个官方Demo的grpc服务接口，这仅是一个演示，真实的业务一般会针对grpc框架做封装，也许不同的语言有各自完整的一套开源框架了。需要注意的地方是，不同的框架下，我们Invoke时真实的method可能有所不同，要根据实际情况做修改。
+本文展示了如何压测一个官方Demo的grpc服务接口，这仅是一个演示，真实的业务一般会针对grpc框架做封装，也许不同的语言有各自完整的一套开源框架了。需要注意的地方是，不同的框架下，我们Invoke时，真实的method可能有所不同，要根据实际情况做修改。
 
-结合连接池和boomer，压测脚本能产生非常好的施压能力，这也体现了go语言的强大。如果想实现非http协议的压测同时又想拥有不错的并发施压能力，boomer是一个不错的选择。
+>结合连接池和boomer，压测脚本能提供非常好的施压能力，这也体现了go语言的强大。如果想实现非http协议的压测同时又想拥有不错的并发施压能力，boomer是一个不错的选择。
 
