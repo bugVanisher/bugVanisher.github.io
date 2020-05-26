@@ -58,7 +58,7 @@ def on_report_to_master(client_id, data):
 ![]({{ site.url }}/assets/loadtest/stats-format.png)
 
 ## 每秒请求数和响应时间及其对应请求个数
-StatsEntry有两个比较重要的对象，分别是num_reqs_per_sec和response_times，它们都是字典类型，其中num_reqs_per_sec的key是秒时间戳，显示当前秒完成了多少个请求，统计的时间是完成请求的时刻，比如如果一个请求从第0秒开始，第3秒完成，那么这个请求统计在第3秒的时间戳上，这个对象可以很方便的计算出rps。response_times的key是响应时间，单位是豪秒，为了防止key过多，做了取整，比如147 取 150, 3432 取 3400 和 58760 取 59000，这个是为了方便获得类似90%请求的平均响应时间，99%请求的平均响应时间，下面具体的源码：
+StatsEntry有两个比较重要的对象，分别是num_reqs_per_sec和response_times，它们都是字典类型，其中num_reqs_per_sec的key是秒时间戳，显示当前秒完成了多少个请求，统计的时间是完成请求的时刻，比如如果一个请求从第0秒开始，第3秒完成，那么这个请求统计在第3秒的时间戳上，这个对象可以很方便的计算出rps。response_times的key是响应时间，单位是豪秒，为了防止key过多，做了取整，比如147 取 150, 3432 取 3400 和 58760 取 59000，这个是为了方便获得类似90%请求的完成时间(小于等于该时间)，99%请求的完成时间，下面具体的源码：
 
 ```python
     def _log_time_of_request(self, current_time):
