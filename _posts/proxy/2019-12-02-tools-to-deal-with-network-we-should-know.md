@@ -19,12 +19,15 @@ published: true
 * Whistle 是基于 Node 实现的跨平台抓包调试代理工具。
 * Mitmproxy 免费的、开源的交互式的http代理工具，提供UI和命令行模式。
 
-工具名称 |	编写语言 | 跨平台	|	是否支持扩展 | websocket代理 | 是否开源
-Fiddler | .NET Framework |  原生Windows，已支持MacOS | 支持 | 支持查看,但修改麻烦 | 是
-Charles | Java |  原生MacOS，有Windows版 | 不支持 | 不支持 | 商业软件
-Burp Suite | Java |  完全跨平台 | 支持 | 支持查看 | 分专业版、免费版
-Whistle | Node |  完全跨平台 | 支持 | 支持且较全面 | 是
-Mitmproxy | Python、C |  完全跨平台 | 支持 | 不支持 | 是
+|工具名称 |	编写语言 | 跨平台	|	是否支持扩展 | websocket代理 | 是否开源|
+| :--- | ---- | ---- | ---- | ---- | ---- |
+|Fiddler | .NET Framework |  原生Windows，已支持MacOS | 支持 | 支持查看,但修改麻烦 | 是|
+|Charles | Java |  原生MacOS，有Windows版 | 不支持 | 不支持 | 商业软件|
+|Burp Suite | Java |  完全跨平台 | 支持 | 支持查看 | 分专业版、免费版|
+|Whistle | Node |  完全跨平台 | 支持 | 支持且较全面 | 是|
+|Mitmproxy | Python、C |  完全跨平台 | 支持 | 不支持 | 是|
+
+
 
 ## TCP层抓包
 
