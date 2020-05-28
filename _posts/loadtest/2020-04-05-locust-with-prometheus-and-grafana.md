@@ -5,6 +5,7 @@ categories: [性能测试]
 description: Locust性能监控平台
 keywords: Locust, 监控平台, Prometheus, Grafana
 published: true
+topmost: true
 ---
 ## 需求背景
 当我们使用Locust做性能压测的时候，压测的过程和展示如下：
