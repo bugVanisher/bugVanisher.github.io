@@ -9,7 +9,7 @@ keywords: locust, 架构, 核心类
 ## 基本介绍
 Locust是开源、使用Python开发、基于事件、支持分布式并且提供Web UI进行测试执行和结果展示的性能测试工具。
 
-Locust的主要特性有两个：  
+Locust的主要特性有两个：  
 * 模拟用户操作:支持多协议，Locust可以用于压测任意协议类型的系统  
 * 并发机制:摒弃了进程和线程，采用协程（gevent）的机制，单台测试机可以产生数千并发压力
 
@@ -49,7 +49,7 @@ Locust使用了以下几个核心库：
 ### Locust的架构
 
 * locust架构上使用master-slave模型，支持单机和分布式
-* master和slave使用 ZeroMQ 协议通讯
+* master和slave（即worker）使用 ZeroMQ 协议通讯
 * 提供web页面管理master，从而控制slave，同时展示压测过程和汇总结果
 * 可选no-web模式（一般用于调试）
 * 基于Python本身已经支持跨平台
@@ -64,8 +64,8 @@ Locust使用了以下几个核心库：
 
 简单来说，Locust的代码分为以下模块：
 
-* Runner-执行器，Locust的核心类，定义了整个框架的执行逻辑，实现了Master、Slave等执行器
-* Locust-压测用例，提供了HttpLocust压测http协议，用户可以定义事务，断言等，也可以实现特定协议的Locust
+* Runner-执行器，Locust的核心类，定义了整个框架的执行逻辑，实现了Master、Slave（worker）等执行器
+* User-压测用例，提供了HttpUser压测http协议，用户可以定义事务，断言等，也可以实现特定协议的User
 * Socket-通信器，提供了分布式模式下master和slave的交互方式
 * RequestStats-采集、分析器，定义了结果分析和数据上报格式
 * EventHook-事件钩子，通过预先定义的事件使得我们可以在这些事件发生时(比如slave上报)做一些额外的操作
@@ -74,14 +74,15 @@ Locust使用了以下几个核心库：
 
 ![](http://processon.com/chart_image/5dda4bd8e4b08b8173c61124.png)
 
-* 用户定义的Locust类作为LocustRunner的locust_classes传入
-* master的client_listener监听client消息
+* 用户定义的User类作为Runner的user_classes传入
+* master的client_listener监听施压端client消息
 * slave的worker方法监听master消息
 * slave的stats_reporter方法上报压测数据，默认3s上报一次
-* slave的start_hatching启动协程，使用分配的并发数开始压测
-* TaskSet和Locust持有client，可以直接发起客户端请求，client可以自己实现，Locust只实现了HttpLocust
+* slave的start启动协程，使用master分配的并发数开始压测
+* slave默认1s上报一次心跳，如果master超过3s未收到某个slave的心跳则会将其标记为missing状态
+* TaskSet和User持有client，可以在类中直接发起客户端请求，client可以自己实现，Locust只实现了HttpUser
 
-看完上面的类图，是不是觉得Locust非常的简单呢？实际上，如果不是对Locust做二次开发，只是使用，那么基本上只会使用到Locust-压测用例相关的类，还有就是EventHook-事件钩子。当然，如果掌握了整个Locust的架构和核心类，那么对它进行二次开发会变得更简单，同时，日常的使用也会更加得心应手，Have fun！
+看完上面的类图，是不是觉得Locust非常的简单呢？实际上，如果不是对Locust做二次开发，只是使用，那么基本上只会使用到User-压测用例相关的类，还有就是EventHook-事件钩子。当然，如果掌握了整个Locust的架构和核心类，那么对它进行二次开发会变得更简单，同时，日常的使用也会更加得心应手，Have fun！
 
 
 

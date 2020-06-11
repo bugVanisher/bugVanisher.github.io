@@ -158,7 +158,7 @@ docker pull grafana/grafana
 docker run -d -p 3000:3000 grafana/grafana
 ```
 
-3）网页端访问locahost:3000验证部署成功
+3）网页端访问localhost:3000验证部署成功
 ![]({{ site.url }}/assets/locust/grafana_home.jpg)
 
 4) 选择添加prometheus数据源
