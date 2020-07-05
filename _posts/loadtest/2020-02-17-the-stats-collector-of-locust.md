@@ -156,4 +156,4 @@ Locust核心的指标其实就4个：
 
 ![]({{ site.url }}/assets/loadtest/stats-item.jpg)
 
-因为master和web模块是一起部署的，因此web可以直接展示master的global_stats的内容，并且可以做到动态显示。
+因为master和web模块是一起部署的，因此web可以直接使用master的global_stats对象并展示其内容，可以做到动态显示。
