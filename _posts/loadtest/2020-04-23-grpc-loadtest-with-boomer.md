@@ -161,7 +161,7 @@ err := client.Call(request, resp)
 
 elapsed := time.Since(startTime)
 ```
-完整的文件地址请看 [main.go](https://github.com/bugVanisher/boomer/blob/master/examples/rpc/main.go)
+完整的文件地址请看 [main.go](https://github.com/myzhan/boomer/blob/master/examples/grpc/main.go)
 
 ### c、调试脚本
 使用boomer的 --run-tasks 调试脚本
