@@ -7,7 +7,7 @@ keywords: Locust, 监控平台, Prometheus, Grafana
 published: true
 topmost: true
 ---
-## 需求背景
+## 背景
 当我们使用Locust做性能压测的时候，压测的过程和展示如下：
 ![]({{ site.url }}/assets/locust/statistics.jpg) 
 ![]({{ site.url }}/assets/locust/charts.jpg) 
@@ -16,35 +16,36 @@ topmost: true
 
 从上面我们可以看到Locust虽然提供了跨平台的web模式的性能监控和展示，但是有以下明显缺陷：
 
-* rps、平均响应时间波动图没有持久化存储，刷新后遍丢失
+* rps、平均响应时间波动图没有持久化存储，刷新后便丢失
 * 整体统计信息只是表格的形式，不能体现波动时序
 * 测试报告过于简陋且只有文字版，只能下载存档
 
-## 需求方案
-方案其实很多选择，为了减少投入成本和最大化利用现用的开源工具，可以选择：
+## 方案
+方案其实很多，但为了减少投入成本和最大化利用现用的开源工具，选择以下方案：
 
-* Locust + InfluxDB + Grafana
-* Locust + Prometheus + Grafana
+Locust + Prometheus + Grafana
 
-我使用的是第二个方案，简单总结起来就是：
+简单总结起来就是：
 
 ```
 实现一个Locust的prometheus的exporter，将数据导入prometheus，然后使用grafana进行数据展示。
 ```
 
-*不难发现Jmeter在网上有许多类似方案的介绍，但很遗憾的是我没有找到很好实现Locust监控平台的方案，所以只能自己实现了。*
+*不难发现Jmeter在网上有许多类似方案的介绍，但很遗憾的是我没有找到很好实现Locust监控平台的方案。*
+
+搜索了一圈后发现boomer项目下有一个年久失修的exporter实现——prometheus_exporter.py, 而且作者并没有提供grafana之类的Dashboard设置，因此决定基于他的基础上，串联起整个流程，我将在下面讲述。
 
 
 ## Docker环境
-Docker环境不是必须的，但是用过都说好。我们这次实战是在docker中完成的，因为它实在是太方便了，如果你也想快速尝试一下本文的监控平台方案，建议先准备好docker环境。
+Docker环境不是必须的，但会给你带来极大的便利。我们这次实战是在docker中完成的，因为它实在是太方便了，如果你也想快速尝试一下本文的监控平台方案，建议先准备好docker环境。
 
 
 ## 编写exporter
 如Locust的官方文档所介绍的 [Extending Locust](https://docs.locust.io/en/stable/extending-locust.html) 我们可以扩展web端的接口，比如添加一个 /export/prometheus 接口，这样Prometheus根据配置定时来拉取Metric信息就可以为Grafana所用了。这里需要使用Prometheus官方提供的client库，[prometheus_client](https://github.com/prometheus/client_python)，来生成符合Prometheus规范的metrics信息。
 
-由于篇幅原因这里不展示代码了，完整代码可以查看这里[prometheus_exporter](https://github.com/bugVanisher/boomer/blob/master/prometheus_exporter.py)
+在[boomer](https://github.com/myzhan/boomer)项目原文件的基础上我做了一些修改和优化，在Readme中添加了Exporter的说明，并提交Pull Request。由于篇幅原因这里不展示代码了，完整代码（基于Locust 1.x版本）可以查看这里[prometheus_exporter](https://github.com/myzhan/boomer/blob/master/prometheus_exporter.py)
 
-下面编写一个locustfile命名为Demo.py：
+为了方便演示，下面编写一个基于Python的locustfile作为施压端，命名为demo.py：
 
 ```python
 #!/usr/bin/env python
@@ -54,14 +55,7 @@ Docker环境不是必须的，但是用过都说好。我们这次实战是在do
 """
     Created by bugVanisher on 2020-03-21
 """
-
-from prometheus_client import REGISTRY
-
-from exporter import LocustCollector
 from locust import HttpLocust, TaskSet, task, between
-
-# 注册收集器
-REGISTRY.register(LocustCollector())
 
 class NoSlowQTaskSet(TaskSet):
 
@@ -79,11 +73,21 @@ class NoSlowQTaskSet(TaskSet):
         r = self.client.get("/user/api/getApps")
 
 
-class MyLocust(HttpLocust):
+class MyLocust(HttpUser):
     task_set = NoSlowQTaskSet
     host = "http://localhost:9528"
 ```
-我们把master跑起来，启动两个slaves。在没有启动压测前，我们浏览器访问一下
+我们把master跑起来，启动两个worker。
+
+```shell
+# 启动master
+locust --master -f prometheus_exporter.py
+
+# 启动worker
+locust --slave -f demo.py
+```
+
+在没有启动压测前，我们浏览器访问一下
 
 ```
 http://127.0.0.1:8089/export/prometheus
@@ -159,7 +163,7 @@ docker run -d -p 3000:3000 grafana/grafana
 ```
 
 3）网页端访问localhost:3000验证部署成功
-![]({{ site.url }}/assets/locust/grafana_home.jpg)
+![]({{ site.url }}/assets/locust/grafana_home.png)
 
 4) 选择添加prometheus数据源
 ![]({{ site.url }}/assets/locust/add_datasource.jpg)
@@ -168,19 +172,19 @@ docker run -d -p 3000:3000 grafana/grafana
 
 5) 导入模板
 
-导入模板有几种方式，选择一种方式将[dashboard](https://grafana.com/grafana/dashboards/12081)模板导入。
-![]({{ site.url }}/assets/locust/import.jpg)
-![]({{ site.url }}/assets/locust/import_json.jpg)
+导入模板有几种方式，选择一种方式将[dashboard](https://grafana.com/grafana/dashboards/12081)模板导入，这个dashboard是整个UI展示的核心，也是我花了比较多精力配置出来的，如果不满意目前的布局和内容，可以尝试修改exporter和dashboard配置。
+![]({{ site.url }}/assets/locust/import.png)
+![]({{ site.url }}/assets/locust/import_json.png)
 
 
 ## 效果展示
-经过一系列『折腾』之后，是时候看看效果了。使用 Docker + Locust + Prometheus + Grafana 到底可以搭建怎样的性能监控平台呢？相比较 Locust 自带的监控平台，我们搭建的性能监控平台究竟有什么优势呢？接下来就是展示成果的时候啦！
+经过一系列『折腾』之后，是时候看看效果了。使用 Docker + Locust + Prometheus + Grafana 到底可以搭建怎样的性能监控平台呢？相比 Locust 自带的Web UI，这样搭建的性能监控平台究竟有什么优势呢？接下来就是展示成果的时候啦！
 
 ![]({{ site.url }}/assets/locust/dashboard.jpg)
 
 ![]({{ site.url }}/assets/locust/dashboard2.jpg)
 
-这个监控方案不仅提供了炫酷好看的图表，还能持久化存储所有压测数据，可以使用Share Dashboard功能保存测试报告并分享，简直太方便！
+这个监控方案不仅提供了炫酷好看的图表，还能持久化存储所有压测数据，可以使用Share Dashboard功能保存测试结果并分享，简直太方便！
 
 ![]({{ site.url }}/assets/locust/share.jpg)
 
