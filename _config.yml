@@ -87,7 +87,7 @@ repository: bugVanisher/bugvanisher.github.io
 components:
   # 不蒜子访问统计
   busuanzi:
-    enabled: false
+    enabled: true
     start_date: 2020-05-28
 
 # ---------------- #
