@@ -7,7 +7,7 @@ keywords: jwt, oauth
 published: true
 ---
 
-最近在给我们组做一个新的测试平台，使用了最近比较火的开源框架—— [gin-vue-admin](https://github.com/flipped-aurora/gin-vue-admin), 对于一个admin框架来说，这个真的做的挺好的了，支持简单的crud代码自动生成，拖动的方式创建前端页面。另外还拥有jwt鉴权，动态路由，动态菜单，casbin鉴权等功能，对快速搭建一个web平台非常方便。
+最近在做一个新的测试平台，使用了最近比较火的开源框架—— [gin-vue-admin](https://github.com/flipped-aurora/gin-vue-admin), 对于一个admin框架来说，这个真的做的挺好的了，支持简单的crud代码自动生成，拖动的方式创建前端页面。另外还拥有jwt鉴权，动态路由，动态菜单，casbin鉴权等功能，对快速搭建一个web平台非常方便。
 
 ## 背景
 
@@ -254,6 +254,10 @@ export const googleCallback = (data) => {
     })
 }
 ```
+
+
+
+**要注意的是：前端回跳地址不能使用vue的hash模式，而是需要使用history模式（非锚点链接），否则google apis后台无法配置为授权的重定向URI！**
 
 ## 效果
 
