@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 实现oauth转jwt（Vue实现）认证登录
+title: 基于oauth的jwt（Vue实现）认证登录
 categories: [测试开发]
-description: 介绍了vue jwt的方式如何接oauth登录
-keywords: jwt, oauth
+description: 基于oauth的jwt（Vue实现）认证登录
+keywords: jwt, oauth, vue
 published: true
 ---
 
