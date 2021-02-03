@@ -21,7 +21,7 @@ published: true
 
 压测过程的展示对于压力测试来说是非常重要的，有些命令行工具在执行时没有展示过程，这是非常不友好的，当然真正的压测除了关注客户端的过程，被测系统的监控也是需要关注的。好看，好用的UI不仅能够让人赏心悦目，还能帮助发现异常。过程和结果应该是可以跨平台的，不受系统制约的，并且可以持久化存储的。比如下面的UI：
 
-![](http://bugvanisher.cn/images/static/grafana.png)
+![]({{ site.cdn.gh-images }}/static/grafana.png)
 
 #### b、分布式架构
 

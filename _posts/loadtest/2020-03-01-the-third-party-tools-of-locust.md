@@ -17,7 +17,7 @@ Locust默认使用requests作为http请求库，了解requests库的人，无不
 
 #### 三、rt评估不准
 相信有些人吐槽过，在并发比较大的情况下，Locust的响应时间rt波动比较大，甚至变得不可信。rt是通过slave去统计的，因此并发大导致slave不稳定也是Locust被人诟病的问题之一，下面我们看一张压测对比图：
-![]({{ site.url }}/assets/locust/RTTvsRPS2.png)
+![]({{ site.cdn.gh-url }}/assets/locust/RTTvsRPS2.png)
 
 简单说明上图中显示的是在100并发下，各个压测工具对相同系统压测（未到瓶颈），响应时间的中位数。可以看到接口正常rt应该在2ms以内，而Locust统计到的却是30ms。（可以看到jmeter也好不到哪里去，真是难兄难弟~）
 
@@ -37,9 +37,9 @@ Python多线程受GIL的影响较大，只有在IO密集型的场景下才能体
 
 还真的有这样的语言： [Golang](https://golang.org/)
 
-![]({{ site.url }}/assets/locust/go.png)
+![]({{ site.cdn.gh-url }}/assets/locust/go.png)
 
-![]({{ site.url }}/assets/locust/go2.png)
+![]({{ site.cdn.gh-url }}/assets/locust/go2.png)
 
 Golang下的goroutine
 

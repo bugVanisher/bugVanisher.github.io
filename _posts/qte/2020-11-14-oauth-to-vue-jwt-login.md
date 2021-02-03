@@ -15,7 +15,7 @@ published: true
 
 ## 解决方案
 
-![image-20201114120115875](http://bugvanisher.cn/images/static/image-20201114120115875.png)
+![image-20201114120115875]({{ site.cdn.gh-images }}/static/image-20201114120115875.png)
 
 oauth2.0的登录方式如上图所示，对gin-vue-admin的改造内容有：
 
@@ -31,7 +31,7 @@ oauth2.0的登录方式如上图所示，对gin-vue-admin的改造内容有：
 
 在[Google APIs](https://console.developers.google.com/apis/dashboard)中申请凭据，得到客户端ID和客户端密钥，配置好授权的重定向地址，类似如下：
 
-<img src="http://bugvanisher.cn/images/static/image-20201114155142099.png" alt="image-20201114155142099" style="zoom:50%;" />
+<img src="{{ site.cdn.gh-images }}/static/image-20201114155142099.png" alt="image-20201114155142099" style="zoom:50%;" />
 
 然后声明和初始化一下，谷歌Oauth config:
 
@@ -263,17 +263,17 @@ export const googleCallback = (data) => {
 
 改造前登录页面
 
-![image-20201115121113341](http://bugvanisher.cn/images/static/image-20201115121113341.png)
+![image-20201115121113341]({{ site.cdn.gh-images }}/static/image-20201115121113341.png)
 
 改造后登录页面
 
-![image-20201114162306164](http://bugvanisher.cn/images/static/image-20201114162306164.png)
+![image-20201114162306164]({{ site.cdn.gh-images }}/static/image-20201114162306164.png)
 
 授权页面
 
-![image-20201115123218965](http://bugvanisher.cn/images/static/image-20201115123218965.png)
+![image-20201115123218965]({{ site.cdn.gh-images }}/static/image-20201115123218965.png)
 
 个人信息
 
-![](http://bugvanisher.cn/images/static/image-20201114162636501.png)
+![个人信息]({{ site.cdn.gh-images }}/static/image-20201114162636501.png)
 

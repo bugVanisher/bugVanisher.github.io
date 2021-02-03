@@ -16,8 +16,8 @@ side_bar_repo_limit: 3
 #      Author      #
 # ---------------- #
 author: 见欢
-organization: 
-organization_url: 
+organization:
+organization_url:
 github_username: bugVanisher
 location: GuangZhou, China
 email: gannicus_yu@163.com
@@ -99,7 +99,7 @@ comments_provider: gitalk
 # !!!Important!!! Please modify infos below to yours
 # https://disqus.com
 disqus:
-    username: 
+    username:
 # https://imsun.net/posts/gitment-introduction/
 #gitment:
 #    owner: bugVanisher
@@ -130,3 +130,10 @@ simple_jekyll_search:
 # ---------------- #
 google:
     analytics_id: UA-80669434-1
+
+# 对 css 和 js 资源的 cdn 加速配置
+cdn:
+    jsdelivr:
+        enabled: true
+    gh-url: https://cdn.jsdelivr.net/gh/bugVanisher/bugvanisher.github.io
+    gh-images: https://cdn.jsdelivr.net/gh/bugVanisher/images

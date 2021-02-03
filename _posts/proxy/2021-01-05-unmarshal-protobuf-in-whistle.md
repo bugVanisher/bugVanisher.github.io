@@ -7,8 +7,6 @@ keywords: 代理，解析，protobuf
 published: true
 ---
 
-
-
 我所在的业务对protobuf的应用比较普遍，无论在websocket长连接的数据帧亦或是通用http请求过程中都喜欢使用protobuf进行序列化，这算是一种私有协议吧。虽然在私密性和性能上有一定的提升，但是测试的时候就非常难受了，所以我的目标很简单，就是能够自动将这些pb序列化的数据反序列化成人可以阅读的文本，比如JSON格式。
 
 ## 工具选择
@@ -19,7 +17,7 @@ whistle官方提供了插件开发的 [实例代码](https://github.com/whistle-
 
 ## 解开websocket数据帧
 
-<img src="https://bugvanisher.cn/images/static/image-20210202142222003.png" alt="websocket上下行数据" style="zoom:80%;" />
+<img src="{{ site.cdn.gh-images }}/static/image-20210202142222003.png" alt="websocket上下行数据" style="zoom:80%;" />
 
 第一个尝试是解websocket的数据帧，我将目光投向了 [whistle.script](https://github.com/whistle-plugins/whistle.script), 因为需要反序列化protobuf，所以要加载*.proto文件，找到了js里操作pb的库 [protobufjs](https://www.npmjs.com/package/protobufjs), 查看官方文档后，可以使用如下代码反序列化ws数据帧。
 
@@ -189,13 +187,13 @@ message Header {
 
 **解析前**
 
-<img src="https://bugvanisher.cn/images/static/image-20210202145951020.png" alt="解析前" style="zoom:50%;" />
+<img src="{{ site.cdn.gh-images }}/static/image-20210202145951020.png" alt="解析前" style="zoom:50%;" />
 
 
 
 **解析后**
 
-<img src="https://raw.githubusercontent.com/bugVanisher/images/master/static/image-20210202185835789.png" alt="image-20210202185835789" style="zoom:50%;" />
+<img src="{{ site.cdn.gh-images }}/static/image-20210202185835789.png" alt="image-20210202185835789" style="zoom:50%;" />
 
 
 
