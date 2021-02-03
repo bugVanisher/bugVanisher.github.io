@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 使用whistle解析Protobuf协议数据
-categories: [抓包]
+categories: [网络]
 description: 抓包解析proto协议数据
 keywords: 代理，解析，protobuf
 published: true
@@ -13,9 +13,9 @@ published: true
 
 ## 工具选择
 
-显然，对于私有协议的抓包解包需要抓包工具支持插件开发，我平时习惯用burpsuite，虽然它提供http的插件接口，但是它并没有提供websocket插件开发的接口（试过翻看文档，着实没找到。。），于是我将目光投向了国人开发的工具——whistle，刚好它提供了一些插件开发的文档，虽然最近更新也是几年前了，但是总归在设计上是支持的。
+显然，对于私有协议的抓包解包需要抓包工具支持插件开发，我平时习惯用burpsuite，虽然它提供http的插件接口，但是它并没有提供websocket插件开发的接口（试过翻看文档，着实没找到。。），于是我将目光投向了国人开发的工具——whistle，刚好它提供了一些插件开发的文档，虽然最近更新也是几年前了，但是总归在设计上是支持的。插件开发的流程和原理我就不赘述了，可以看[这里](https://wproxy.org/whistle/plugins.html)。
 
-whistle官方提供了插件开发的 [实例代码](https://github.com/whistle-plugins) ，令人头疼的是它的官方插件文档写得比较早，插件实例推出后没有更新相应的文档，于是，开始了艰难的尝试之路。。。
+whistle官方提供了插件开发的 [实例代码](https://github.com/whistle-plugins) ，令人头疼的是它的官方插件文档写得比较早，插件实例推出后没有更新相应的文档，而且我的场景实例有些差异，于是，开始了艰难的尝试之路。。。
 
 ## 解开websocket数据帧
 
@@ -154,11 +154,12 @@ Client: {"kind":372,"type":2001}
 
 ## 解开http请求Body
 
-使用 whistle.script 只能在插件模块的console打印出明文数据，对于websocket这种长连接看连续的不同消息还算方便，但对于单个的http请求来说就很麻烦了，能不能直接在 Inspectors 里查看呢？于是我发现了 [whistle.pipe](https://github.com/whistle-plugins/examples/tree/master/whistle.test-pipe) 这个插件，它可以用来解析请求和响应数据并在Inspector模块中查看。于是我按照whistle的插件开发方式，与官方事例的修改响应内容不同，我需要解析的是请求的body，使用 lack 创建了 reqRead、reqWrite 而不是 resRead、resWrite。
+使用 whistle.script 只能在插件模块的console打印出明文数据，对于websocket这种长连接看连续的不同消息还算方便，但对于单个的http请求来说就很麻烦了，能不能直接在 Inspectors 里查看呢？于是我发现了 [whistle.pipe](https://github.com/whistle-plugins/examples/tree/master/whistle.test-pipe) 这个插件，它可以用来解析请求和响应数据并在Inspector模块中查看。于是我按照whistle的插件开发方式，使用 lack 创建了 reqRead、reqWrite 而不是 resRead、resWrite（与官方实例的解析响应内容不同，我需要解析的是请求的body）。
 
 我要解析的是一个上报数据接口，它的请求body是pb序列化的，message 定义如下：
 
 ```protobuf
+// EventList即是request body
 message EventList {repeated Event events = 1;}
 
 message Event {
@@ -184,11 +185,19 @@ message Header {
 }
 ```
 
-服务端会根据header的id等字段来反序列化body，场景跟websocket的两层pb类似。整个解析的思路就是在reqRead的时候将客户端已序列化的数据反序列出来，并输出json格式，在reqWrite真正发出请求时将数据序列回去再发给服务器，这样明文的信息就可以直接在 Inspector 中查看。我们先看看解析前后的情况：
+服务端会根据header的id等字段来反序列化body，场景跟websocket的两层pb类似。整个解析的思路就是在reqRead的时候将客户端已序列化的数据反序列出来，并输出json，在reqWrite真正发出请求时将数据序列回去再发给真正的服务器，这样明文的信息就可以直接在 Inspector 中查看。我们先看看解析前后的情况：
+
+**解析前**
 
 <img src="https://bugvanisher.cn/images/static/image-20210202145951020.png" alt="解析前" style="zoom:50%;" />
 
-<img src="https://bugvanisher.cn/images/static/image-20210202150431177.png" alt="解析后" style="zoom:50%;" />
+
+
+**解析后**
+
+<img src="https://raw.githubusercontent.com/bugVanisher/images/master/static/image-20210202185835789.png" alt="image-20210202185835789" style="zoom:50%;" />
+
+
 
 下面就来看看reqRead 和 reqWrite应该如何编写：
 
@@ -221,7 +230,6 @@ module.exports = (server/* , options */) => {
             let body = getBodyObj(singleEvent.header.id, root, singleEvent.body)
             events.push({header: singleEvent.header, body: body});
           }
-
           res.end(JSON.stringify(events));
         });
 
@@ -231,14 +239,12 @@ module.exports = (server/* , options */) => {
     });
   });
 };
-
 ```
 
 ```javascript
 // reqWrite.js
 let {getBodyBytes, pb, event} = require("./base")
 let ProtoBuf = require("protobufjs");
-
 
 module.exports = (server/* , options */) => {
   server.on('request', (req, res) => {
@@ -268,7 +274,6 @@ module.exports = (server/* , options */) => {
           });
           let buffers = EventList.encode(eventList).finish();
           res.end(buffers);
-
         });
       } else {
         res.end();
@@ -327,5 +332,7 @@ exports.getBodyBytes = getBodyBytes;
 
 ## 写在最后
 
-时间精力有限，并没有能深入地研究whistle的整个插件开发机制，只是理解了部分机制，解决了最迫切的问题，目前只是做到了WebSocket、HTTP包解析，不能够手动篡改，比如在Composer中构造请求，如果以后有时间再研究分享。最后要吐槽下whistle的插件开发文档，真的有些过时了，开发过程遇到的问题很多时候不知道怎么求解！
+由于时间和精力有限，并没有深入地研究whistle的整个插件开发机制，靠着官方实例插件代码，目前只是做到了WebSocket、HTTP包解析，不能够手动篡改，比如在Composer中构造请求，但已经满足了最迫切的需求，如果以后有时间了再研究分享。
+
+Whistle本身是一个非常棒的工具，无论是通用的websocket、http还是私有协议，都可以抓包解包，甚至是改包，但是要吐槽下whistle的插件开发文档，真的有些过时了，而且也写的不够清楚，开发过程遇到的问题很多时候不知道怎么求解，尤其对不太熟悉nodejs的人！
 
