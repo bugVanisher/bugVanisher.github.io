@@ -330,6 +330,8 @@ exports.getBodyBytes = getBodyBytes;
 
 ## 写在最后
 
+最后不要忘记在Rules中添加规则使匹配的流量进入到插件中，如script://handleWebSocket、pipe://myPlugin。
+
 由于时间和精力有限，并没有深入地研究whistle的整个插件开发机制，靠着官方实例插件代码，目前只是做到了WebSocket、HTTP包解析，不能够手动篡改，比如在Composer中构造请求，但已经满足了最迫切的需求，如果以后有时间了再研究分享。
 
 Whistle本身是一个非常棒的工具，无论是通用的websocket、http还是私有协议，都可以抓包解包，甚至是改包，但是要吐槽下whistle的插件开发文档，真的有些过时了，而且也写的不够清楚，开发过程遇到的问题很多时候不知道怎么求解，尤其对不太熟悉nodejs的人！
