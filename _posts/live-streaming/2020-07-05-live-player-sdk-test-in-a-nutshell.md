@@ -11,7 +11,7 @@ published: true
 上一篇文章讲了——[推流SDK]({{ site.url }}/2020/03/18/live-pusher-sdk-test-in-a-nutshell/) 的相关测试，接下来我介绍一下拉流端的测试内容，本文不包含点播相关测试。
 
 在讲直播拉流SDK测试之前，我们再来回顾一下整个的直播业务架构从而让我们的思绪回到音视频技术中来,以腾讯云直播方案为例。
-![]({{ site.url }}/assets/live-streaming/直播架构.png)
+![]({{ site.cdn.gh-url }}/assets/live-streaming/直播架构.png)
 
 ## 测试内容
 要实现一个现代直播播放器，需要实现拉流-解封装-解码-缓存处理-音视频同步，五个主要功能，所以测试也主要围绕这几个方面，所有的测试内容见如下图：

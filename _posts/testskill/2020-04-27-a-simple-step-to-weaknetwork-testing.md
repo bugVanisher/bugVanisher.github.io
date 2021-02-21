@@ -24,33 +24,33 @@ Network Link Conditioner，这是苹果提供的弱网模拟工具，支持iOS�
 ## 一、Mac安装Network Link Conditioner
 1、点击 [下载地址](https://developer.apple.com/download/more/) 访问苹果开发者网站提供的下载页面，NLC这个工具被包含在Hardware IO Tools for Xcode的工具包中。
 
-![]({{ site.url }}/assets/testskill/nlc_download.jpg)
+![]({{ site.cdn.gh-url }}/assets/testskill/nlc_download.jpg)
 
 2、双击下载后的安装包，找到NLC双击安装
 
-![]({{ site.url }}/assets/testskill/nlc_install.jpg)
+![]({{ site.cdn.gh-url }}/assets/testskill/nlc_install.jpg)
 
 ## 二、Mac设置为有线网络联网
 公司一般提供两种上网方式，分别是有线和无线，这里我们的Mac使用有线上网（需要一个有线网卡，本方案使用的是绿联的转换器，集成了有线网卡），Mac自带的无线网卡用来共享网络。
-![]({{ site.url }}/assets/testskill/cable_network.jpg)
+![]({{ site.cdn.gh-url }}/assets/testskill/cable_network.jpg)
 
 ## 三、设置共享网络
 在Mac 系统偏好设置——共享 中 选中互联网共享, 共享以下来源的连接，选中有线网络，用以下端口共享给电脑中选中WiFi。
 
-![]({{ site.url }}/assets/testskill/share_network.jpg)
+![]({{ site.cdn.gh-url }}/assets/testskill/share_network.jpg)
 
 点击WiFi选项，设置共享网络名称和密码，这里我设置的网络标识为:bugVanisher。
 
-![]({{ site.url }}/assets/testskill/wifi_options.jpg)
+![]({{ site.cdn.gh-url }}/assets/testskill/wifi_options.jpg)
 
 勾选中互联网共享，并开启网络共享,出现以下图片的情况说明共享成功。
 
-![]({{ site.url }}/assets/testskill/share_inprocess.jpg)
+![]({{ site.cdn.gh-url }}/assets/testskill/share_inprocess.jpg)
 
 ## 四、配置弱网
 此时使用手机连上bugVanisher,Mac上打开Network Link Conditioner,这里需要注意Network Link Conditioner是一个配置面板，所以不能在安装的应用中找到它，我们可以使用聚焦搜索来找到他并打开。
 
-![]({{ site.url }}/assets/testskill/nlc_pane.jpg)
+![]({{ site.cdn.gh-url }}/assets/testskill/nlc_pane.jpg)
 
 接下来就可以根据需要配置各种网络情况了，比如带宽、丢包、延时等。关于如何设置的问题，网上有很多了，这里不再赘述。
 

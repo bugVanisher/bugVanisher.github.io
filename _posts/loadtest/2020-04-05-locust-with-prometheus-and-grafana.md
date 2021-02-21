@@ -9,8 +9,8 @@ topmost: true
 ---
 ## 背景
 当我们使用Locust做性能压测的时候，压测的过程和展示如下：
-![]({{ site.url }}/assets/locust/statistics.jpg) 
-![]({{ site.url }}/assets/locust/charts.jpg) 
+![]({{ site.cdn.gh-url }}/assets/locust/statistics.jpg) 
+![]({{ site.cdn.gh-url }}/assets/locust/charts.jpg) 
 
 其中波动图是非持久化存储的，也就是刷新后，波动图就清空了。尽管Statistics中显示的信息比较完整，但是都是瞬时值，并不能体现出时序上的变化。像Failures、Exceptions、Slaves分在不同的tag查看起来也比较麻烦。Locust的测试报告也只有简单的csv文件，需要下载。			
 
@@ -93,12 +93,12 @@ locust --slave -f demo.py
 http://127.0.0.1:8089/export/prometheus
 ```
 返回结果如下：
-![]({{ site.url }}/assets/locust/exporter_empty.jpg)
+![]({{ site.cdn.gh-url }}/assets/locust/exporter_empty.jpg)
 
 这是使用prometheus_client库默认产生的信息，对我们数据采集没有影响，如果想关注master进程可以在grafana上创建相应的监控大盘。
 
 接着我们启动10个并发用户开始压测，继续访问下上面的地址：
-![]({{ site.url }}/assets/locust/exporter_start.jpg)
+![]({{ site.cdn.gh-url }}/assets/locust/exporter_start.jpg)
 
 可以看到，locust_stats_avg_content_length、locust_stats_current_rps等信息都采集到了。
 
@@ -146,7 +146,7 @@ docker run -itd -p 9090:9090 -v ~/opt/prometheus/prometheus.yml:/etc/prometheus/
 ```
 http://127.0.0.1:9090/graph
 ```
-![]({{ site.url }}/assets/locust/prom_graph.jpg)
+![]({{ site.cdn.gh-url }}/assets/locust/prom_graph.jpg)
 
 
 ## Grafana部署和配置
@@ -163,30 +163,30 @@ docker run -d -p 3000:3000 grafana/grafana
 ```
 
 3）网页端访问localhost:3000验证部署成功
-![]({{ site.url }}/assets/locust/grafana_home.png)
+![]({{ site.cdn.gh-url }}/assets/locust/grafana_home.png)
 
 4) 选择添加prometheus数据源
-![]({{ site.url }}/assets/locust/add_datasource.jpg)
-![]({{ site.url }}/assets/locust/add_db_succ.jpg)
-![]({{ site.url }}/assets/locust/db_list.jpg)
+![]({{ site.cdn.gh-url }}/assets/locust/add_datasource.jpg)
+![]({{ site.cdn.gh-url }}/assets/locust/add_db_succ.jpg)
+![]({{ site.cdn.gh-url }}/assets/locust/db_list.jpg)
 
 5) 导入模板
 
 导入模板有几种方式，选择一种方式将[dashboard](https://grafana.com/grafana/dashboards/12081)模板导入，这个dashboard是整个UI展示的核心，也是我花了比较多精力配置出来的，如果不满意目前的布局和内容，可以尝试修改exporter和dashboard配置。
-![]({{ site.url }}/assets/locust/import.png)
-![]({{ site.url }}/assets/locust/import_json.png)
+![]({{ site.cdn.gh-url }}/assets/locust/import.png)
+![]({{ site.cdn.gh-url }}/assets/locust/import_json.png)
 
 
 ## 效果展示
 经过一系列『折腾』之后，是时候看看效果了。使用 Docker + Locust + Prometheus + Grafana 到底可以搭建怎样的性能监控平台呢？相比 Locust 自带的Web UI，这样搭建的性能监控平台究竟有什么优势呢？接下来就是展示成果的时候啦！
 
-![]({{ site.url }}/assets/locust/dashboard.jpg)
+![]({{ site.cdn.gh-url }}/assets/locust/dashboard.jpg)
 
-![]({{ site.url }}/assets/locust/dashboard2.jpg)
+![]({{ site.cdn.gh-url }}/assets/locust/dashboard2.jpg)
 
 这个监控方案不仅提供了炫酷好看的图表，还能持久化存储所有压测数据，可以使用Share Dashboard功能保存测试结果并分享，简直太方便！
 
-![]({{ site.url }}/assets/locust/share.jpg)
+![]({{ site.cdn.gh-url }}/assets/locust/share.jpg)
 
 
 >Locust一直被人诟病，主要有两方面，一是监控平台做得太过于简陋，二是CPython的GIL导致需要起更多的slave来充分利用多核CPU且并发大之后response time不稳定。对于第一个问题，相信读到篇文章的你应该认为这不是什么问题了，而第二点，如果我们无法摆脱GIL，那自己用另一种语言实现一个slave端呢？实际上，有人做出来了，它就是boomer和locust4j。
