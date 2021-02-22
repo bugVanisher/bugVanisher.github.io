@@ -55,7 +55,7 @@ Docker环境不是必须的，但会给你带来极大的便利。我们这次�
 """
     Created by bugVanisher on 2020-03-21
 """
-from locust import HttpLocust, TaskSet, task, between
+from locust import HttpUser, TaskSet, task, between
 
 class NoSlowQTaskSet(TaskSet):
 
