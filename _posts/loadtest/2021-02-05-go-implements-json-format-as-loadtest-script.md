@@ -36,6 +36,7 @@ published: true
 ## 定义Json结构
 
 接下来，定义Json结构，尽量去满足上面所描述的需求。http协议，无非就是三个部分，body、header、url，因此每一个接口需要包含这个三个字段，当然，名字是必不可少的，还有一个非常重要的字段，就是校验字段validator，下面就来看看这个Json应该是什么样子。
+{% raw %}
 
 ```javascript
 {
@@ -75,7 +76,7 @@ published: true
     ]
 }
 ```
-
+{% endraw %}
 func_set应该挺好理解的，这里解释一下declare、init_variables、running_variables：
 
 - declare
