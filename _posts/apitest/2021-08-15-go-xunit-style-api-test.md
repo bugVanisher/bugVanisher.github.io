@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Go实现xunit风格的接口测试
+title: Go实现xunit风格的用例编写
 categories: [接口测试]
-description: 使用go实现xunit风格的接口测试
-keywords: go, 接口测试, rpc
+description: 使用go实现xunit风格的用例编写
+keywords: go, xunit, rpc
 published: true
 ---
 
