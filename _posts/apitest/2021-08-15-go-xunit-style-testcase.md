@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Go实现xunit风格的用例编写
-categories: [接口测试]
+categories: [自动化测试]
 description: 使用go实现xunit风格的用例编写
 keywords: go, xunit, rpc
 published: true
